@@ -5,7 +5,6 @@ import SearchField from "@/components/SearchField";
 export default async function Home() {
     const allLists = await getAllLists();
 
-    // fetch all lists
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
             <Link href="/list/create" className="border border-white px-4 py-2">
