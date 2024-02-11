@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { getAllLists } from "@/services/listService";
 import SearchField from "@/components/SearchField";
+import UserInfo from "@/components/UserInfo";
 
 export default async function Home() {
     const allLists = await getAllLists();
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <Link href="/list/create" className="border border-white px-4 py-2">
-                Create New List
-            </Link>
+        <main>
+            <UserInfo></UserInfo>
+            <Link href="/list/create">Create New List</Link>
             <div>
                 <ul>
                     {allLists?.map((list, index) => {

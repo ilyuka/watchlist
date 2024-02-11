@@ -9,10 +9,9 @@ export default function Page() {
         formState: { errors },
     } = useForm();
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <main>
             <div>
                 <form
-                    className="flex flex-col"
                     onSubmit={handleSubmit((data) => {
                         createList(data);
                     })}
@@ -25,7 +24,6 @@ export default function Page() {
                                 required: "Please input name of your list",
                             })}
                             id="title"
-                            className="text-black"
                         />
                         <p>{errors.title?.message?.toString()}</p>
                     </label>
@@ -36,7 +34,6 @@ export default function Page() {
                             id="description"
                             cols={30}
                             rows={10}
-                            className="text-black"
                         ></textarea>
                         <p>{errors.description?.message?.toString()}</p>
                     </label>

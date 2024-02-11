@@ -1,9 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchMoviesData } from "@/api/data";
+import { fetchMoviesData } from "@/app/api/data";
+import { useSession } from "next-auth/react";
 
 export default function SearchField() {
+    const { data: session, status } = useSession();
+    console.log("CLIENT SESSION: ", session, status);
+
     const [input, setInput] = useState("");
     const [results, setResults] = useState([]);
 
@@ -13,9 +17,8 @@ export default function SearchField() {
         console.log(results);
     }
     return (
-        <div className="border border-solid border-red-500 text-white">
+        <div>
             <input
-                className="text-black"
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
