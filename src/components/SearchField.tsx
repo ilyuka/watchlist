@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchMoviesData } from "@/app/api/data";
+import { fetchMovieData, fetchMoviesData } from "@/app/api/data";
 import { useSession } from "next-auth/react";
 
 export default function SearchField() {
     const { data: session, status } = useSession();
-    console.log("CLIENT SESSION: ", session, status);
 
     const [input, setInput] = useState("");
     const [results, setResults] = useState([]);
@@ -35,6 +34,14 @@ export default function SearchField() {
                 <div key={movie.id}>
                     <h4>{movie.title}</h4>
                     <p>{movie.release_date}</p>
+                    <button
+                        onClick={async (e) => {
+                            console.log(await fetchMovieData(movie.id));
+                            2;
+                        }}
+                    >
+                        log
+                    </button>
                     <hr />
                 </div>
             ))}

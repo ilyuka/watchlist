@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Form() {
+    const router = useRouter();
     const [username, setUsername] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
@@ -10,8 +12,26 @@ export default function Form() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setUsername((oldUsername) => {
+            const newUsername = oldUsername;
+            newUsername.trim().toLowerCase();
+            return newUsername;
+        });
+
         if (!username || !password1 || !password2) {
             setCustomError("All fields are necessary.");
+            return;
+        } else if (!/^[0-9a-z_]{4,16}$/.test(username)) {
+            setCustomError(
+                "Username should have 4-16 characters and contain only english alphabet characters, numbers and underscores.",
+            );
+            return;
+        } else if (!/^.{8,16}$/.test(password1)) {
+            setCustomError("Password should be 8-16 characters long.");
+            return;
+        } else if (password1 !== password2) {
+            setCustomError("Passwords must match.");
             return;
         }
         try {
@@ -41,18 +61,20 @@ export default function Form() {
                 const form = e.target;
                 form.reset();
                 router.push("/login");
+                router.refresh();
             } else {
                 console.log("User registration failed");
             }
         } catch (error) {
             console.log("Error during user registration.");
+            console.error(error);
         }
     };
 
     return (
         <div
             className="shadow-lg border-2 border-solid border-gray-500 pb-4
-rounded-3xl bg-slate-800 overflow-hidden"
+rounded-3xl bg-slate-800 overflow-hidden max-w-md"
         >
             <div className="bg-gray-900/70 pt-8 pb-12 z-10">
                 <h1 className="text-3xl font-bold text-center">Sign Up</h1>

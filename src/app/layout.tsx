@@ -4,8 +4,6 @@ import "./globals.css";
 import { AuthProvider } from "./Providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Link from "next/link";
-import Logout from "@/components/Logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +22,6 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <nav>
-                    {!!session && <Logout />}
-                    {!session && <Link href={"/login"}>Log In</Link>}
-                </nav>
                 <AuthProvider>{children}</AuthProvider>
             </body>
         </html>

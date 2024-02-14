@@ -14,19 +14,27 @@ export default function Form() {
         e.preventDefault();
 
         try {
+            if (!username || !password) {
+                setCustomError("All fields are necessary.");
+                return;
+            }
             const res = await signIn("credentials", {
                 username: username,
                 password: password,
                 redirect: false,
             }); // "credentials" - name of provider
 
+            if (!res) {
+                setCustomError("Server error, try again later.");
+                return;
+            }
             if (res.error) {
-                setCustomError("Invalid credentials");
+                setCustomError("Invalid credentials.");
                 return;
             }
 
             router.push("/");
-            router.refresh();
+            router.refresh(); // to clear the router cache ????
         } catch (error) {
             console.log(error);
         }

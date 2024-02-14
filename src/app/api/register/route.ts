@@ -6,7 +6,7 @@ import prisma from "@/../prisma/prisma";
 export async function POST(req: Request) {
     try {
         const { username, password1, password2 } = await req.json();
-        // validate here
+
         const hashedPassword = await bcrypt.hash(password1, 1);
 
         const user = await prisma.user.create({
