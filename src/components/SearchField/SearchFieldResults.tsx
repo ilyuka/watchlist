@@ -22,19 +22,17 @@ export type Results = {
     handleClick: Function;
 };
 
-export default function Results({ results, handleClick }: Results) {
-    const { movies, setMovies } = useContext(MoviesContext);
+export default function SearchFieldResults({ results, handleClick }: Results) {
+    const { movies, addMovie } = useContext(MoviesContext);
     return (
-        <div className="max-h-52 max-w-80 overflow-y-auto border border-cyan-100 bg-cyan-950/40 text-white">
+        <div className="z-10 max-h-60 max-w-80 overflow-y-auto border border-cyan-100 bg-cyan-950/40 text-white">
             {results.map((movie) => (
                 <button
                     key={movie.id}
                     className="flex w-full cursor-pointer items-center gap-4 border-b border-b-cyan-100 p-1 pr-2 hover:bg-cyan-700"
                     style={{ minHeight: "75px" }}
                     onClick={(e) => {
-                        console.log(movie.id);
-                        const newMovies = [...movies, movie.id];
-                        setMovies(newMovies);
+                        addMovie(e, movie);
                     }}
                 >
                     <div

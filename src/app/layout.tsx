@@ -5,6 +5,7 @@ import { AuthProvider } from "./Providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Navbar from "@/components/Navbar";
+import Notifications from "@/components/Notifications";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +25,10 @@ export default async function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <AuthProvider>
-                    <Navbar></Navbar>
-                    {children}
+                    <Notifications>
+                        <Navbar></Navbar>
+                        {children}
+                    </Notifications>
                 </AuthProvider>
             </body>
         </html>

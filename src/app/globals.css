@@ -18,6 +18,40 @@ body {
     text-wrap: balance;
 }
 
+.loader {
+    margin-left: 0.5rem;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-bottom-color: #ff3d00;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.notification {
+    position: fixed;
+    top: 0;
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* input {
     @apply w-[400px] border-2 border-solid border-slate-600 p-2 rounded-xl text-black bg-slate-50/90;
 } */
