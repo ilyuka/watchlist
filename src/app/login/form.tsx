@@ -42,14 +42,17 @@ export default function Form() {
 
     return (
         <div
-            className="shadow-lg border-2 border-solid border-gray-500 pb-4
-rounded-3xl bg-slate-800 overflow-hidden"
+            className="pb- overflow-hidden rounded-3xl border-2 border-solid
+border-gray-500 bg-slate-800"
         >
-            <div className="bg-gray-900/70 pt-8 pb-12 z-10">
-                <h1 className="text-3xl font-bold text-center">Sign In</h1>
+            <div className="z-10 bg-gray-900/70 pb-12 pt-8">
+                <h1 className="text-center text-3xl font-bold">Sign In</h1>
             </div>
-            <div className="px-8 pt-14 bg-slate-800 relative -translate-y-5 z-20 rounded-3xl">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-7">
+            <div className="relative z-20 -translate-y-5 rounded-3xl bg-slate-800 px-8 pt-14">
+                <form
+                    onSubmit={handleSubmit}
+                    className="text flex flex-col gap-7 text-black"
+                >
                     <input
                         onChange={(e) => setUsername(e.target.value)}
                         type="text"
@@ -61,15 +64,15 @@ rounded-3xl bg-slate-800 overflow-hidden"
                         placeholder="Password"
                     />
                     {customError && (
-                        <div className="text-red-300 text-sm">
+                        <div className="text-sm text-red-300">
                             {customError}
                         </div>
                     )}
-                    <button className="bg-teal-950 py-2 font-bold rounded-xl border border-slate-400/40 mt-12 cursor-pointer">
+                    <button className="mt-12 cursor-pointer rounded-xl border border-slate-400/40 bg-teal-950 py-2 font-bold">
                         Sign In
                     </button>
                     <Link
-                        className="text-sm text-center underline"
+                        className="text-center text-sm underline"
                         href="/register"
                     >
                         {"Don't have an account? Sign Up"}

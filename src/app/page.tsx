@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllLists } from "@/services/listService";
-import SearchField from "@/components/SearchField";
+import SearchField from "@/components/SearchField/SearchField";
 
 export default async function Home() {
     const allLists = await getAllLists();
@@ -15,9 +15,7 @@ export default async function Home() {
                     })}
                 </ul>
             </div>
-            <div>
-                <SearchField></SearchField>
-            </div>
+            <div>{/* <SearchField></SearchField> */}</div>
         </main>
     );
 }

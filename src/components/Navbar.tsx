@@ -18,11 +18,14 @@ export default async function Navbar() {
                     </Link>
                 </div>
                 <div className="mr-12 flex items-center gap-6 font-bold uppercase">
-                    <p>Films</p>
-                    <p>Lists</p>
+                    <p className="cursor-pointer hover:text-slate-400">Films</p>
+                    <p className="cursor-pointer hover:text-slate-400">Lists</p>
                     {!!session && (
                         <div className="flex gap-6">
-                            <Link href={"/" + username + "/lists"}>
+                            <Link
+                                className="cursor-pointer hover:text-slate-400"
+                                href={"/" + username + "/lists"}
+                            >
                                 {username}
                             </Link>
                             <Logout />

@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/../prisma/prisma";
 
 export async function GET(req: Request, res: Response) {
+    console.log(req.url);
     try {
-        console.log("TRIED");
         const { searchParams } = new URL(req.url);
         const username = searchParams.get("username") || "";
 
@@ -12,9 +12,15 @@ export async function GET(req: Request, res: Response) {
                 username: username,
             },
         });
-
         if (user) {
-            return NextResponse.json({ status: 200, message: "User found" });
+            return NextResponse.json({
+                status: 200,
+                message: "User found",
+                user: {
+                    id: user.id,
+                    username: user.username,
+                },
+            });
         } else {
             return NextResponse.json({
                 status: 404,
@@ -35,6 +41,7 @@ export async function GET(req: Request, res: Response) {
 }
 
 export async function POST(req: Request) {
+    console.log("inside post");
     try {
         const { username } = await req.json();
 
