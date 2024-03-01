@@ -14,6 +14,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   lists List[]
+  likedLists ListLike[]
+  likedListComments ListCommentLike[]
+  likedMovies MovieLike[]
+  likedMovieComments MovieCommentLike[]
 }
 
 model List {
@@ -24,8 +28,10 @@ model List {
   likesCount Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  movies Int[]
   user User @relation(fields: [userId], references: [id])
+  movies MovieOnList[]
+  comments ListComment[]
+  likes ListLike[]
 }
 
 model Movie {
@@ -33,5 +39,74 @@ model Movie {
   tmdbId Int
   title String
   releaseDate String
+  // other fields
+  lists MovieOnList[]
+  likes MovieLike[]
+  comments MovieComment[]
 }
+
+model MovieOnList {
+  id Int @id @default(autoincrement())
+  listId Int
+  movieId Int
+  list List @relation(fields: [listId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+  @@unique([listId, movieId]) // ensures that the same movie can’t be added to the same list more than once.
+}
+
+model ListComment {
+  id Int @id @default(autoincrement())
+  text String
+  listId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  list List @relation(fields: [listId], references: [id])
+  likes ListCommentLike[]
+}
+model MovieComment {
+  id Int @id @default(autoincrement())
+  text String
+  movieId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  movie Movie @relation(fields: [movieId], references: [id])
+  likes MovieCommentLike[]
+}
+
+model ListLike {
+  id Int @id @default(autoincrement())
+  userId Int
+  listId Int
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  list List @relation(fields: [listId], references: [id])
+  @@unique([userId, listId])
+}
+model ListCommentLike {
+  id Int @id @default(autoincrement())
+  userId Int
+  commentId Int
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  comment ListComment @relation(fields: [commentId], references: [id])
+  @@unique([userId, commentId])
+}
+model MovieCommentLike {
+  id Int @id @default(autoincrement())
+  userId Int
+  commentId Int
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  comment MovieComment @relation(fields: [commentId], references: [id])
+  @@unique([userId, commentId])
+}
+model MovieLike {
+  id Int @id @default(autoincrement())
+  userId Int
+  movieId Int
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+}
+
 
