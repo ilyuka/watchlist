@@ -110,7 +110,8 @@ model MovieLike {
   movieId Int
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
-  movie Movie @relation(fields: [movieId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [tmdbId])
+  @@unique([userId, movieId])
 }
 
 

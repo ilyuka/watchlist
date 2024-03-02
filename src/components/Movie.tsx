@@ -5,10 +5,21 @@ import Eye from "./svgs/Eye";
 import DotsHorizontal from "./svgs/DotsHorizontal";
 import { useState } from "react";
 import MoreOptions from "./MoreOptions";
+import { addMovieLike, removeMovieLike } from "@/services/movieService";
 
-export default function Movie({ movie }) {
+export default function Movie({ movie, isLiked, userId, movieId }) {
     const [showOptions, setShowOptions] = useState(false);
+    const [liked, setLiked] = useState(isLiked);
 
+    const toggleLike = async () => {
+        const newLiked = !liked;
+        setLiked(newLiked);
+        if (newLiked === true) {
+            await addMovieLike(Number(userId), Number(movieId));
+        } else {
+            await removeMovieLike(Number(userId), Number(movieId));
+        }
+    };
     const showMoreOptions = () => {
         setShowOptions(true);
     };
@@ -33,10 +44,10 @@ export default function Movie({ movie }) {
 
             <ul className="options">
                 <li>
-                    <button title="Add to liked">
+                    <button title="Add to liked" onClick={toggleLike}>
                         <Heart
                             size={22}
-                            fill={SVG_FILL_COLOR}
+                            fill={liked ? "orange" : SVG_FILL_COLOR}
                             color={"none"}
                         ></Heart>
                     </button>
