@@ -2,10 +2,9 @@
 import Image from "next/image";
 import Edit from "./svgs/Edit";
 import Heart from "./svgs/Heart";
+import Link from "next/link";
+
 export default function List({ list, movies, length, lastIndex, isOwner }) {
-    // console.log("IMAGEURLS", imageUrls);
-    console.log("LIST", list);
-    console.log(typeof length, "TYPE OF LENGTH");
     return (
         <div
             className={`border border-cyan-100/40 px-2 py-4 ${lastIndex === false ? "border-b-transparent" : ``} `}
@@ -20,7 +19,6 @@ export default function List({ list, movies, length, lastIndex, isOwner }) {
                                     key={index}
                                     style={{
                                         transform: `translateX(-${index * 15}%)`,
-                                        // marginRight: `-${index * 15}px`,
                                         zIndex: `${5 - index}`,
                                         height: "98px",
                                         width: "60px",
@@ -75,7 +73,9 @@ export default function List({ list, movies, length, lastIndex, isOwner }) {
                 </div>
                 <div>
                     <div className="flex items-center gap-2">
-                        <div className="text-lg font-bold">{list.title}</div>
+                        <div className="text-lg font-bold">
+                            <Link href={`/list/${list.id}`}>{list.title}</Link>
+                        </div>
                         {isOwner && (
                             <div>
                                 <Edit size={16} color={"#ffffff"}></Edit>

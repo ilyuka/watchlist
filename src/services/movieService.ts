@@ -33,6 +33,7 @@ export const allMoviesFromList = async (listId) => {
                 movie: true,
             },
         });
+        return movies;
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");

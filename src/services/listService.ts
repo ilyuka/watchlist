@@ -85,6 +85,20 @@ export const getListsByUsername = async (userId: number) => {
     }
 };
 
+export const getListByListId = async (listId: number) => {
+    try {
+        const list = await prisma.list.findFirst({
+            where: {
+                id: listId,
+            },
+        });
+        return list;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
 export const countMoviesOnList = async (listId: number) => {
     try {
         const count = await prisma.movieOnList.count({
