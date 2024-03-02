@@ -18,8 +18,7 @@ export default async function Page({
         return <h1>404</h1>;
     }
     const session = await getServerSession(authOptions);
-    console.log("SERVERSESSSSION", session);
-    const lists = await getListsByUsername(user.id);
+    const lists = await getListsByUsername(user.user.id);
     const movies = {};
     const lengths = {};
     for (const list of lists) {
@@ -42,6 +41,7 @@ export default async function Page({
             <div className="my-4">
                 {lists.map((list, index) => {
                     return (
+                        // !list.isWatchlist && (
                         <List
                             key={list.id}
                             list={list}
@@ -50,6 +50,7 @@ export default async function Page({
                             lastIndex={index === lists.length - 1}
                             isOwner={session?.user.username === username}
                         ></List>
+                        // )
                     );
                 })}
             </div>

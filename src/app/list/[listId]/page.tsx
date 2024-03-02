@@ -1,10 +1,11 @@
-import { getListByListId } from "@/services/listService";
+import { getListByListId, getWatchlistMovies } from "@/services/listService";
 import { allMoviesFromList } from "@/services/movieService";
 import Movie from "@/components/Movie";
 import { getUserByUsername } from "@/services/userService";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getMovieLikes } from "@/services/movieService";
+import { getWatchlistIdByUserId } from "@/services/listService";
 
 export default async function Page({ params }) {
     const movies = await allMoviesFromList(Number(params.listId));
@@ -13,9 +14,14 @@ export default async function Page({ params }) {
     const userOwner = await getUserByUsername(list.userId);
     const session = await getServerSession(authOptions);
     const user = session.user;
-    console.log("MOVIE IDS", movieIds);
     const likes = await getMovieLikes(user.id, movieIds);
-    console.log("LIKES", likes);
+    const watchlistId = await getWatchlistIdByUserId(userOwner.id);
+    const watchlistMovies = await getWatchlistMovies(watchlistId.id);
+    const watchlistMoviesIds = watchlistMovies.map(
+        (movie) => movie.movie.tmdbId,
+    );
+    console.log("WATCHLISt MOVIES IDS", watchlistMoviesIds);
+
     return (
         <main className="mx-auto max-w-4xl  py-4">
             <div>
@@ -42,6 +48,10 @@ export default async function Page({ params }) {
                             )}
                             userId={user.id}
                             movieId={movie.movie.tmdbId}
+                            inWatchlist_={watchlistMoviesIds.includes(
+                                movie.movie.tmdbId,
+                            )}
+                            watchlistId={watchlistId.id}
                         ></Movie>
                     );
                 })}

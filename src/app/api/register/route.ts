@@ -16,6 +16,24 @@ export async function POST(req: Request) {
             },
         });
 
+        const userHasWatchlist = await prisma.list.findFirst({
+            where: {
+                isWatchlist: true,
+                userId: user.id,
+            },
+        });
+        if (userHasWatchlist) {
+            throw new Error("User already has watchlist");
+        } else {
+            await prisma.list.create({
+                data: {
+                    isWatchlist: true,
+                    userId: user.id,
+                    title: `watchlist_${user.id}`,
+                },
+            });
+        }
+
         return NextResponse.json(
             { message: "User registered!" },
             { status: 201 },

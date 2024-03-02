@@ -6,10 +6,29 @@ import DotsHorizontal from "./svgs/DotsHorizontal";
 import { useState } from "react";
 import MoreOptions from "./MoreOptions";
 import { addMovieLike, removeMovieLike } from "@/services/movieService";
+import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
 
-export default function Movie({ movie, isLiked, userId, movieId }) {
+export default function Movie({
+    movie,
+    isLiked,
+    inWatchlist_,
+    watchlistId,
+    userId,
+    movieId,
+}) {
     const [showOptions, setShowOptions] = useState(false);
     const [liked, setLiked] = useState(isLiked);
+    const [inWatchlist, setInWatchlist] = useState(inWatchlist_);
+    console.log("in_watchlist_", inWatchlist_);
+    const toggleInWatchlist = async () => {
+        const newInWatchlist = !inWatchlist;
+        setInWatchlist(newInWatchlist);
+        if (newInWatchlist === true) {
+            await addToWatchlist(watchlistId, movieId);
+        } else {
+            await removeFromWatchlist(watchlistId, movieId);
+        }
+    };
 
     const toggleLike = async () => {
         const newLiked = !liked;
@@ -54,11 +73,14 @@ export default function Movie({ movie, isLiked, userId, movieId }) {
                 </li>
 
                 <li>
-                    <button title="Add to watchlist">
+                    <button
+                        title="Add to watchlist"
+                        onClick={toggleInWatchlist}
+                    >
                         <Eye
                             size={22}
                             fill={"none"}
-                            color={SVG_FILL_COLOR}
+                            color={inWatchlist ? "skyblue" : SVG_FILL_COLOR}
                         ></Eye>
                     </button>
                 </li>

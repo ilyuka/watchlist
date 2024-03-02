@@ -112,3 +112,66 @@ export const countMoviesOnList = async (listId: number) => {
         throw new Error("Database Error");
     }
 };
+
+export const getWatchlistMovies = async (watchlistId) => {
+    try {
+        const watchlistMovies = await prisma.movieOnList.findMany({
+            where: {
+                listId: watchlistId,
+            },
+            include: {
+                movie: true,
+            },
+        });
+        return watchlistMovies;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
+export const getWatchlistIdByUserId = async (userId) => {
+    try {
+        const watchlistId = await prisma.list.findFirst({
+            where: {
+                userId: userId,
+            },
+            select: {
+                id: true,
+            },
+        });
+        return watchlistId;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
+export const addToWatchlist = async (watchlistId, movieId) => {
+    try {
+        await prisma.movieOnList.create({
+            data: {
+                listId: watchlistId,
+                movieId: movieId,
+            },
+        });
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+export const removeFromWatchlist = async (watchlistId, movieId) => {
+    console.log("RECEIVED", watchlistId, movieId);
+
+    try {
+        await prisma.movieOnList.deleteMany({
+            where: {
+                listId: watchlistId,
+                movieId: movieId,
+            },
+        });
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
