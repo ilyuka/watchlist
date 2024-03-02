@@ -29,11 +29,12 @@ export default function SearchFieldResults({ results, handleClick }: Results) {
             {results.map((movie) => (
                 <button
                     key={movie.id}
-                    className="flex w-full cursor-pointer items-center gap-4 border-b border-b-cyan-100 p-1 pr-2 hover:bg-cyan-700"
+                    className=" flex w-full cursor-pointer items-center gap-4 border-b border-b-cyan-100 p-1 pr-2 hover:bg-cyan-700"
                     style={{ minHeight: "75px" }}
                     onClick={(e) => {
                         addMovie(e, movie);
                     }}
+                    type="button"
                 >
                     <div
                         style={{

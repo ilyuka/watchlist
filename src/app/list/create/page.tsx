@@ -6,6 +6,7 @@ import { useState, createContext, useContext } from "react";
 import Movies from "@/components/ListForm/Movies";
 import { NotificationsContext } from "@/components/Notifications";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const MoviesContext = createContext({
     movies: [],
@@ -14,8 +15,8 @@ export const MoviesContext = createContext({
 
 export default function Page() {
     const session = useSession();
-    const user = session?.data?.user || { id: -1, usename: "" };
-
+    const user = session?.data?.user || { id: -1, username: "" };
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -72,11 +73,14 @@ export default function Page() {
                 <div className="mx-auto max-w-4xl ">
                     <Form
                         title={"New List"}
-                        onSubmit={(data: FieldValues) => {
+                        onSubmit={async (data: FieldValues) => {
+                            console.log("here");
                             if (!moviesAreValid()) {
                                 return;
                             }
-                            createList(data, user, movies);
+                            await createList(data, user, movies);
+                            notify("List has been successfully created!");
+                            router.push(`/${user.username}/lists`);
                         }}
                     ></Form>
                     <Movies movies={movies} deleteMovie={deleteMovie} />
