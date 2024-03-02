@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { fetchMovieData, fetchMoviesData } from "@/app/api/data";
-import { useSession } from "next-auth/react";
 import SearchFieldResults from "./SearchFieldResults";
 
 type Props = {

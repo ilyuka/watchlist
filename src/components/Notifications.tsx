@@ -20,6 +20,9 @@ export default function Notification({ children }) {
     }, [message]);
 
     const notify = (newMessage: string) => {
+        if (newMessage === message) {
+            newMessage = newMessage + " ";
+        }
         if (show) {
             setShow(false);
             setTimeout(() => {

@@ -3,9 +3,9 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { createList } from "@/services/listService";
 import Form from "@/components/ListForm/Form";
 import { useState, createContext, useContext } from "react";
-import SearchField from "@/components/SearchField/SearchField";
 import Movies from "@/components/ListForm/Movies";
 import { NotificationsContext } from "@/components/Notifications";
+import { useSession } from "next-auth/react";
 
 export const MoviesContext = createContext({
     movies: [],
@@ -13,6 +13,9 @@ export const MoviesContext = createContext({
 });
 
 export default function Page() {
+    const session = useSession();
+    const user = session?.data?.user || { id: -1, usename: "" };
+
     const {
         register,
         handleSubmit,
@@ -22,14 +25,17 @@ export default function Page() {
 
     const [movies, setMovies] = useState([]);
 
-    const { message, notify } = useContext(NotificationsContext);
+    const { notify } = useContext(NotificationsContext);
 
     const addMovie = (e: Event, movie) => {
+        if (movies.length === 1024) {
+            notify("List can't be longer than 1024 movies!");
+            return;
+        }
         console.log(movies);
 
         const inTheList = movies.some((mv) => mv.id === movie.id);
         if (!inTheList) {
-            console.log(movie);
             setMovies([
                 ...movies,
                 {
@@ -37,15 +43,14 @@ export default function Page() {
                     title: movie.title,
                     release_date: movie.release_date,
                     poster_path: movie.poster_path,
+                    backdrop_path: movie.backdrop_path,
+                    original_title: movie.original_title,
+                    overview: movie.overview,
+                    original_language: movie.original_language,
                 },
             ]);
         } else {
-            const msg = "This movie is already in the list!";
-            if (message === msg) {
-                notify(msg + " ");
-                return;
-            }
-            notify(msg);
+            notify("This movie is already in the list!");
         }
     };
 
@@ -53,7 +58,13 @@ export default function Page() {
         setMovies(movies.filter((mv) => mv.id !== movieId));
     };
 
-    const [counter, setCounter] = useState(0);
+    const moviesAreValid = () => {
+        if (movies.length === 0) {
+            notify("List can't be empty!");
+            return false;
+        }
+        return true;
+    };
 
     return (
         <MoviesContext.Provider value={{ movies, addMovie }}>
@@ -62,13 +73,12 @@ export default function Page() {
                     <Form
                         title={"New List"}
                         onSubmit={(data: FieldValues) => {
-                            console.log(data);
-                            console.log(errors);
-                            // reset();
+                            if (!moviesAreValid()) {
+                                return;
+                            }
+                            createList(data, user, movies);
                         }}
                     ></Form>
-                    <SearchField handleClick={addMovie}></SearchField>
-
                     <Movies movies={movies} deleteMovie={deleteMovie} />
                 </div>
             </main>

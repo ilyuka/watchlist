@@ -8,6 +8,11 @@ import {
 } from "react-hook-form";
 import Input from "./Input";
 import Textarea from "./Textarea";
+import { useContext } from "react";
+import { MoviesContext } from "@/app/list/create/page";
+import SearchField from "@/components/SearchField/SearchField";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 type Props = {
     title: string;
@@ -15,6 +20,9 @@ type Props = {
 };
 
 export default function Form({ title, onSubmit }: Props) {
+    const session = useSession();
+    const username = session?.data?.user?.username || "";
+    const { addMovie } = useContext(MoviesContext);
     const methods = useForm();
     console.log("FORM RENDER");
     return (
@@ -22,7 +30,7 @@ export default function Form({ title, onSubmit }: Props) {
             <form
                 onSubmit={methods.handleSubmit((data) => {
                     onSubmit(data);
-                    methods.reset();
+                    // methods.reset();
                 })}
             >
                 <FormTitle title={title}></FormTitle>
@@ -65,7 +73,27 @@ export default function Form({ title, onSubmit }: Props) {
                         ></Textarea>
                     </div>
                 </fieldset>
-                <input type="submit" value="Submit" />
+                <div className="flex justify-between">
+                    <SearchField handleClick={addMovie}></SearchField>
+                    <div className="flex gap-4">
+                        <button>
+                            <Link
+                                href={
+                                    username
+                                        ? `/${username}/lists`
+                                        : "/dashboard"
+                                }
+                            >
+                                Cancel
+                            </Link>
+                        </button>
+                        <input
+                            className="cursor-pointer"
+                            type="submit"
+                            value="Submit"
+                        />
+                    </div>
+                </div>
             </form>
         </FormProvider>
     );
