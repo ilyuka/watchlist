@@ -1,6 +1,6 @@
 import { getListByListId, getWatchlistMovies } from "@/services/listService";
 import { allMoviesFromList } from "@/services/movieService";
-import Movie from "@/components/Movie";
+import Movie from "@/components/Movie/Movie";
 import { getUserByUsername } from "@/services/userService";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -43,6 +43,7 @@ export default async function Page({ params }) {
                         <Movie
                             key={movie.id}
                             movie={movie}
+                            listId={Number(params.listId)}
                             isLiked={likes.find(
                                 (like) => like.movieId === movie.movie.tmdbId,
                             )}

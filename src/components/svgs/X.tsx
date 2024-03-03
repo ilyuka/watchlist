@@ -1,7 +1,11 @@
 import React from "react";
-const X = ({ size = 24, color = "#000000" }) => (
+const X = ({
+    size = 24,
+    color = "#000000",
+    hoverClassName = "hover:text-red-400",
+}) => (
     <svg
-        className="transition-colors duration-100 hover:text-red-400"
+        className={`transition-colors duration-100 ${hoverClassName}`}
         xmlns="http://www.w3.org/2000/svg"
         width={size}
         height={size}

@@ -88,9 +88,37 @@ export const removeMovieLike = async (userId, movieId) => {
     }
 };
 
+export const addMovieToList = async (listId, movieId) => {
+    try {
+        await prisma.movieOnList.create({
+            data: {
+                listId: listId,
+                movieId: movieId,
+            },
+        });
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
+export const removeMovieFromList = async (listId, movieId) => {
+    try {
+        await prisma.movieOnList.deleteMany({
+            where: {
+                listId: listId,
+                movieId: movieId,
+            },
+        });
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
 /*
 
-try {
+    try {
         
     } catch(e) {
         console.log(e);

@@ -1,7 +1,7 @@
 import Logo from "@/components/svgs/Logo";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Logout from "@/components/Logout";
+import Logout from "./Logout";
 import Link from "next/link";
 
 export default async function Navbar() {
