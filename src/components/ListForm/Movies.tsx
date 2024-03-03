@@ -25,6 +25,9 @@ export default function Movies({ movies, deleteMovie }) {
                             key={movie.id}
                         >
                             <div className="flex items-center gap-2  p-1">
+                                <div className="">
+                                    {movie.positionOnTheList}
+                                </div>
                                 <Image
                                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                                     alt={movie.title}

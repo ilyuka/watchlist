@@ -18,6 +18,7 @@ export default function Movie({
     userId,
     movieId,
     listId,
+    userOwner,
 }) {
     const [showOptions, setShowOptions] = useState(false);
     const [liked, setLiked] = useState(isLiked);
@@ -53,7 +54,15 @@ export default function Movie({
 
     return (
         <MovieContext.Provider
-            value={{ listId, movie, movieId, userId, hideMoreOptions }}
+            value={{
+                userOwner,
+                liked,
+                listId,
+                movie,
+                movieId,
+                userId,
+                hideMoreOptions,
+            }}
         >
             <div
                 className="movie-poster relative flex flex-col items-center rounded-sm"

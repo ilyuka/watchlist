@@ -25,7 +25,6 @@ export default async function Page({
         movies[list.id] = [];
         const firstFiveMovies = await firstFiveMoviesFromList(list.id);
         for (const movieOnList of firstFiveMovies) {
-            console.log(movieOnList.movie);
             movies[list.id].push(movieOnList.movie);
         }
         const length = await countMoviesOnList(list.id);
@@ -73,6 +72,7 @@ async function getData(username: string) {
     if (data.status === 200) {
         return { user: data.user };
     } else {
+        console.log("RETURNED NULL, DATA:", data);
         return { user: null };
     }
 }

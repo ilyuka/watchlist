@@ -77,9 +77,9 @@ export default function List({ list, movies, length, lastIndex, isOwner }) {
                             <Link href={`/list/${list.id}`}>{list.title}</Link>
                         </div>
                         {isOwner && (
-                            <div>
+                            <Link href={`/list/${list.id}/edit`}>
                                 <Edit size={16} color={"#ffffff"}></Edit>
-                            </div>
+                            </Link>
                         )}
                     </div>
                     <div className="text-xs text-gray-400">

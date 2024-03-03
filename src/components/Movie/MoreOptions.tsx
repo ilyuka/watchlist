@@ -10,7 +10,8 @@ export default function MoreOptions({
     toggleInWatchlist,
     inWatchlist,
 }) {
-    const { hideMoreOptions, movieId } = useContext(MovieContext);
+    const { userOwner, userId, liked, hideMoreOptions, movieId } =
+        useContext(MovieContext);
 
     const [mouseEntered, setMouseEntered] = useState(false);
     const mouseEnteredRef = useRef(mouseEntered);
@@ -38,7 +39,7 @@ export default function MoreOptions({
                 onMouseLeave={() => setTimeout(hideMoreOptions, 150)}
             >
                 <Option
-                    text="Like"
+                    text={liked ? "Unlike" : "Like"}
                     handleClick={toggleLike}
                     isFirst={true}
                 ></Option>
@@ -51,7 +52,8 @@ export default function MoreOptions({
                     handleClick={toggleInWatchlist}
                 ></Option>
                 <AddToListsOption></AddToListsOption>
-                <RemoveFromListOption></RemoveFromListOption>
+                {userOwner.id === userId && <RemoveFromListOption />}
+
                 <Link
                     className="w-full border-t border-t-stone-500 px-4 py-3 text-center hover:bg-stone-500"
                     href={`/movie/${movieId}`}

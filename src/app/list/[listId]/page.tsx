@@ -44,6 +44,7 @@ export default async function Page({ params }) {
                             key={movie.id}
                             movie={movie}
                             listId={Number(params.listId)}
+                            userOwner={userOwner}
                             isLiked={likes.find(
                                 (like) => like.movieId === movie.movie.tmdbId,
                             )}

@@ -33,13 +33,13 @@ export default function Page() {
             notify("List can't be longer than 1024 movies!");
             return;
         }
-        console.log(movies);
 
         const inTheList = movies.some((mv) => mv.id === movie.id);
         if (!inTheList) {
             setMovies([
                 ...movies,
                 {
+                    positionOnTheList: movies.length + 1,
                     id: movie.id,
                     title: movie.title,
                     release_date: movie.release_date,

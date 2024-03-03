@@ -77,7 +77,6 @@ export const getListsByUsername = async (userId: number) => {
                 userId: userId,
             },
         });
-        console.log("LISTS OF USER:", listsByUsername);
         return listsByUsername;
     } catch (error) {
         console.log(error);
@@ -107,6 +106,23 @@ export const countMoviesOnList = async (listId: number) => {
             },
         });
         return count;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
+export const getListMovies = async (listId) => {
+    try {
+        const watchlistMovies = await prisma.movieOnList.findMany({
+            where: {
+                listId: listId,
+            },
+            include: {
+                movie: true,
+            },
+        });
+        return watchlistMovies;
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");
