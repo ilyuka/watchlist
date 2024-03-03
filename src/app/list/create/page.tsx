@@ -39,7 +39,6 @@ export default function Page() {
             setMovies([
                 ...movies,
                 {
-                    positionOnTheList: movies.length + 1,
                     id: movie.id,
                     title: movie.title,
                     release_date: movie.release_date,
@@ -83,7 +82,11 @@ export default function Page() {
                             router.push(`/${user.username}/lists`);
                         }}
                     ></Form>
-                    <Movies movies={movies} deleteMovie={deleteMovie} />
+                    <Movies
+                        setMovies={setMovies}
+                        movies={movies}
+                        deleteMovie={deleteMovie}
+                    />
                 </div>
             </main>
         </MoviesContext.Provider>

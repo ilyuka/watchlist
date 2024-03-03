@@ -1,7 +1,27 @@
-import Image from "next/image";
-import X from "../svgs/X";
+import Movie from "./Movie";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
-export default function Movies({ movies, deleteMovie }) {
+export default function Movies({ movies, deleteMovie, setMovies }) {
+    const onDragEnd = (result) => {
+        const { destination, source, draggableId } = result;
+        if (!destination) {
+            return;
+        }
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const newMovies = [...movies];
+        const tmp = newMovies[source.index];
+        newMovies[source.index] = newMovies[destination.index];
+        newMovies[destination.index] = tmp;
+        setMovies(newMovies);
+        console.log("setting");
+    };
+
     if (movies.length === 0) {
         return (
             <div className="my-4 grid min-h-44 place-items-center items-center border border-cyan-100">
@@ -17,44 +37,30 @@ export default function Movies({ movies, deleteMovie }) {
         );
     } else {
         return (
-            <div className="my-4">
-                {movies.map((movie, index) => {
-                    return (
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                    {(provided) => (
                         <div
-                            className={`flex items-center justify-between border border-cyan-300/80 bg-gray-800/80 ${index === movies.length - 1 ? "" : "border-b-transparent"}`}
-                            key={movie.id}
+                            className="my-4"
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
                         >
-                            <div className="flex items-center gap-2  p-1">
-                                <div className="">
-                                    {movie.positionOnTheList}
-                                </div>
-                                <Image
-                                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                                    alt={movie.title}
-                                    width={50}
-                                    height={75}
-                                    className="text-sm italic"
-                                ></Image>
-                                <div className="text-lg font-bold">
-                                    {movie.title}
-                                </div>
-                                <div className="font-light">
-                                    ({movie.release_date.split("-")[0]})
-                                </div>
-                            </div>
-                            <div className="mr-4 cursor-pointer">
-                                <button
-                                    onClick={(e) => {
-                                        deleteMovie(movie.id);
-                                    }}
-                                >
-                                    <X size={30} color="#ccfbf1" />
-                                </button>
-                            </div>
+                            {movies.map((movie, index) => {
+                                return (
+                                    <Movie
+                                        key={index}
+                                        index={index}
+                                        movies={movies}
+                                        movie={movie}
+                                        deleteMovie={deleteMovie}
+                                    ></Movie>
+                                );
+                            })}
+                            {provided.placeholder}
                         </div>
-                    );
-                })}
-            </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         );
     }
 }

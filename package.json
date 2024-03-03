@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@hello-pangea/dnd": "^16.5.0",
         "@prisma/client": "^5.9.1",
         "axios": "^1.6.7",
         "bcryptjs": "^2.4.3",
