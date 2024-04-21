@@ -1,78 +1,52 @@
-import { getListsByUsername } from "@/services/listService";
+const axios = require("axios").default;
 import Link from "next/link";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { notFound } from "next/navigation";
+import { auth } from "@/helpers/auth";
 import FormTitle from "@/components/ListForm/FormTitle";
-import List from "@/components/List";
-import { firstFiveMoviesFromList } from "@/services/movieService";
-import { countMoviesOnList } from "@/services/listService";
+import Lists from "@/components/Lists/Lists";
+
+const getUser = async (username: string) => {
+    try {
+        const responseUser = await axios({
+            url:
+                process.env.NEXT_PUBLIC_URL +
+                `/api/userExists?username=${username}`,
+            method: "GET",
+        });
+        const user = responseUser.data.user;
+        if (!user || !user.id || !user.username) {
+            return null;
+        }
+        return user;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
 
 export default async function Page({
     params,
 }: {
     params: { username: string };
 }) {
-    const username = params.username || "";
-    const user = await getData(username);
+    const username = params["username"];
+    if (!username) {
+        return notFound();
+    }
+    const user = await getUser(username);
     if (!user) {
-        return <h1>404</h1>;
+        return notFound();
     }
-    const session = await getServerSession(authOptions);
-    const lists = await getListsByUsername(user.user.id);
-    const movies = {};
-    const lengths = {};
-    for (const list of lists) {
-        movies[list.id] = [];
-        const firstFiveMovies = await firstFiveMoviesFromList(list.id);
-        for (const movieOnList of firstFiveMovies) {
-            movies[list.id].push(movieOnList.movie);
-        }
-        const length = await countMoviesOnList(list.id);
-        lengths[list.id] = length;
-    }
-
+    const session = await auth();
+    const isOwner =
+        session.user.id === user.id && session.user.username === user.username;
     return (
         <main className="mx-auto max-w-4xl ">
             <FormTitle title={`${username}'s Lists`} />
             <div>
-                {session && <Link href="/list/create">Start New List</Link>}
+                {isOwner && <Link href="/list/create">Start New List</Link>}
             </div>
-            <div className="my-4">
-                {lists.map((list, index) => {
-                    return (
-                        // !list.isWatchlist && (
-                        <List
-                            key={list.id}
-                            list={list}
-                            movies={movies[list.id]}
-                            length={lengths[list.id]}
-                            lastIndex={index === lists.length - 1}
-                            isOwner={session?.user.username === username}
-                        ></List>
-                        // )
-                    );
-                })}
-            </div>
+            <Lists isOwner={isOwner} user={user} />
         </main>
     );
-}
-
-async function getData(username: string) {
-    const res = await fetch(
-        process.env.URL + `/api/userExists/?username=${username}`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        },
-    );
-    const data = await res.json();
-
-    if (data.status === 200) {
-        return { user: data.user };
-    } else {
-        console.log("RETURNED NULL, DATA:", data);
-        return { user: null };
-    }
 }

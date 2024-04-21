@@ -16,10 +16,9 @@ export default function Movies({ movies, deleteMovie, setMovies }) {
 
         const newMovies = [...movies];
         const tmp = newMovies[source.index];
-        newMovies[source.index] = newMovies[destination.index];
-        newMovies[destination.index] = tmp;
+        newMovies.splice(source.index, 1);
+        newMovies.splice(destination.index, 0, tmp);
         setMovies(newMovies);
-        console.log("setting");
     };
 
     if (movies.length === 0) {

@@ -45,12 +45,12 @@ export const createList = async (data: FieldValues, user, movies) => {
                     data: {
                         tmdbId: movies[i].id,
                         title: movies[i].title,
-                        releaseDate: movies[i].release_date,
-                        posterPath: movies[i].poster_path,
-                        backdropPath: movies[i].backdrop_path,
-                        originalTitle: movies[i].original_title,
+                        release_date: movies[i].release_date,
+                        poster_path: movies[i].poster_path,
+                        backdrop_path: movies[i].backdrop_path,
+                        original_title: movies[i].original_title,
                         overview: movies[i].overview,
-                        originalLanguage: movies[i].original_language,
+                        original_language: movies[i].original_language,
                     },
                 });
                 console.log("added new movie");
@@ -60,6 +60,7 @@ export const createList = async (data: FieldValues, user, movies) => {
                 data: {
                     listId: newList.id,
                     movieId: movieId,
+                    positionOnTheList: i,
                 },
             });
         }
@@ -70,11 +71,19 @@ export const createList = async (data: FieldValues, user, movies) => {
     }
 };
 
-export const getListsByUsername = async (userId: number) => {
+export const getListsByUsername = async (username: string) => {
     try {
+        const user = await prisma.user.findUnique({
+            where: {
+                username: username,
+            },
+        });
+        if (!user || user.id) {
+            throw new Error("No user");
+        }
         const listsByUsername = await prisma.list.findMany({
             where: {
-                userId: userId,
+                userId: user.id,
             },
         });
         return listsByUsername;
@@ -114,15 +123,18 @@ export const countMoviesOnList = async (listId: number) => {
 
 export const getListMovies = async (listId) => {
     try {
-        const watchlistMovies = await prisma.movieOnList.findMany({
+        const listMovies = await prisma.movieOnList.findMany({
             where: {
                 listId: listId,
             },
             include: {
                 movie: true,
             },
+            orderBy: {
+                positionOnTheList: "asc",
+            },
         });
-        return watchlistMovies;
+        return listMovies;
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");

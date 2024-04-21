@@ -1,11 +1,10 @@
 import Logo from "@/components/svgs/Logo";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Logout from "./Logout";
 import Link from "next/link";
+import { auth } from "@/helpers/auth";
 
 export default async function Navbar() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     console.log("session:___", session);
     const username = session?.user.username;
 

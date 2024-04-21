@@ -71,7 +71,7 @@ export default function Movie({
                     width: "125px",
                 }}
             >
-                {movie.movie.posterPath == null ? (
+                {movie.movie.poster_path == null ? (
                     <div
                         style={{
                             height: "187px",
@@ -85,7 +85,7 @@ export default function Movie({
                     >
                         <div className="text-center">
                             <p>{movie.movie.title}</p>
-                            <p>({movie.movie.releaseDate.split("-")[0]})</p>
+                            <p>({movie.movie.release_date.split("-")[0]})</p>
                         </div>
                     </div>
                 ) : (
@@ -95,7 +95,7 @@ export default function Movie({
                             width: "100%",
                             objectFit: "fill",
                         }}
-                        src={`https://image.tmdb.org/t/p/original/${movie.movie.posterPath}`}
+                        src={`https://image.tmdb.org/t/p/original/${movie.movie.poster_path}`}
                         alt={movie.movie.title}
                         height={187}
                         width={125}

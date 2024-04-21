@@ -39,12 +39,12 @@ model Movie {
   id Int @id @default(autoincrement())
   tmdbId Int @unique
   title String
-  releaseDate String
-  posterPath String?
-  backdropPath String?
-  originalTitle String
+  release_date String
+  poster_path String?
+  backdrop_path String?
+  original_title String
   overview String
-  originalLanguage String
+  original_language String
   lists MovieOnList[]
   likes MovieLike[]
   comments MovieComment[]
@@ -85,7 +85,7 @@ model ListLike {
   listId Int
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
-  list List @relation(fields: [listId], references: [id])
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
   @@unique([userId, listId])
 }
 model ListCommentLike {

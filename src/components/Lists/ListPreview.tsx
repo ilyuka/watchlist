@@ -1,10 +1,50 @@
 "use client";
 import Image from "next/image";
-import Edit from "./svgs/Edit";
-import Heart from "./svgs/Heart";
+import Edit from "@/components/svgs/Edit";
+import Heart from "@/components/svgs/Heart";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+const axios = require("axios").default;
 
-export default function List({ list, movies, length, lastIndex, isOwner }) {
+type ListProps = {
+    listId: number;
+    isOwner: boolean;
+};
+
+const getMoviesByListId = async (listId: number) => {
+    try {
+        const responseMovies = await axios({
+            url:
+                process.env.NEXT_PUBLIC_URL +
+                `/api/lists/${listId}/movies?limit=5`,
+            method: "GET",
+        });
+        const movies = responseMovies.data.movies;
+        if (!movies || responseMovies.status >= 300) {
+            return null;
+        }
+        console.log("MOVIES", movies);
+        return movies;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+
+export default function ListPreview({ list, isOwner, lastIndex }) {
+    const [postersUrls, setPostersUrls] = useState([]);
+    useEffect(() => {
+        getMoviesByListId(list.id).then((movies) =>
+            setPostersUrls((urls) => {
+                const posters = movies.map((mv) => {
+                    return mv.movie.poster_path;
+                });
+                console.log("posters", posters);
+                return posters;
+            }),
+        );
+    }, [list.id]);
+
     return (
         <div
             className={`border border-cyan-100/40 px-2 py-4 ${lastIndex === false ? "border-b-transparent" : ``} `}
@@ -26,19 +66,18 @@ export default function List({ list, movies, length, lastIndex, isOwner }) {
                                     }}
                                     className="overflow-clip rounded-sm shadow-2xl"
                                 >
-                                    {index < length &&
-                                    movies[index].posterPath ? (
+                                    {index < length && postersUrls[index] ? (
                                         <Image
                                             style={{
                                                 height: "100%",
                                             }}
-                                            src={`https://image.tmdb.org/t/p/original/${movies[index].posterPath}`}
+                                            src={`https://image.tmdb.org/t/p/original/${postersUrls[index]}`}
                                             alt={movies[index].title}
                                             height={90}
                                             width={60}
                                         ></Image>
                                     ) : index < length &&
-                                      !movies[index].posterPath ? (
+                                      !movies[index].poster_path ? (
                                         <div
                                             className="border border-gray-300/20"
                                             style={{
@@ -59,7 +98,7 @@ export default function List({ list, movies, length, lastIndex, isOwner }) {
                                                 {
                                                     movies[
                                                         index
-                                                    ].releaseDate.split("-")[0]
+                                                    ].release_date.split("-")[0]
                                                 }
                                                 )
                                             </p>
