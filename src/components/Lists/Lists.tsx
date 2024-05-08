@@ -1,24 +1,8 @@
 "use client";
 import List from "@/components/Lists/ListPreview";
 import { useState, useEffect } from "react";
-const axios = require("axios").default;
-
-const getUserLists = async (user: { username: string; id: number }) => {
-    try {
-        const responseLists = await axios({
-            url: process.env.NEXT_PUBLIC_URL + `/api/lists/user/${user.id}`,
-            method: "GET",
-        });
-        const lists = responseLists.data.lists;
-        if (!lists || responseLists.status >= 300) {
-            return null;
-        }
-        return lists;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-};
+import { getUserLists } from "@/helpers/api";
+import type { ListInterface } from "@/types/list";
 
 export default function Lists({
     isOwner,
@@ -29,11 +13,12 @@ export default function Lists({
 }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    const [lists, setLists] = useState([]);
+    const [lists, setLists] = useState<ListInterface[]>([]);
     useEffect(() => {
         getUserLists(user)
             .then((lists) => {
                 setLists(lists);
+                console.log("lists", lists);
             })
             .catch((e) => {
                 console.error(e);

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/../prisma/prisma";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
     try {
         const payload = await req.json();
         const username = payload.username.trim().toLowerCase();

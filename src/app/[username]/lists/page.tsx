@@ -1,28 +1,9 @@
-const axios = require("axios").default;
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/helpers/auth";
 import FormTitle from "@/components/ListForm/FormTitle";
 import Lists from "@/components/Lists/Lists";
-
-const getUser = async (username: string) => {
-    try {
-        const responseUser = await axios({
-            url:
-                process.env.NEXT_PUBLIC_URL +
-                `/api/userExists?username=${username}`,
-            method: "GET",
-        });
-        const user = responseUser.data.user;
-        if (!user || !user.id || !user.username) {
-            return null;
-        }
-        return user;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-};
+import { getUser } from "@/helpers/api";
 
 export default async function Page({
     params,
