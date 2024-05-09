@@ -1,4 +1,5 @@
 import axios from "axios";
+import { MovieInterface } from "@/types/movie";
 
 const getUser = async (username: string) => {
     try {
@@ -37,4 +38,26 @@ const getUserLists = async (user: { username: string; id: number }) => {
     }
 };
 
-export { getUser, getUserLists };
+const getMoviesByListId = async (
+    listId: number,
+    limit: number,
+): Promise<{ movie: MovieInterface }[]> => {
+    try {
+        const responseMovies = await axios({
+            url:
+                process.env.NEXT_PUBLIC_URL +
+                `/api/lists/${listId}/movies?limit=${limit}`,
+            method: "GET",
+        });
+        const movies = responseMovies.data.movies;
+        if (!movies || responseMovies.status >= 300) {
+            return [];
+        }
+        return movies;
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
+};
+
+export { getUser, getUserLists, getMoviesByListId };

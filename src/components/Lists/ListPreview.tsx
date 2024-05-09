@@ -4,112 +4,38 @@ import Edit from "@/components/svgs/Edit";
 import Heart from "@/components/svgs/Heart";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-const axios = require("axios").default;
+import type { ListInterface } from "@/types/list";
+import type { MovieInterface } from "@/types/movie";
+import { getMoviesByListId } from "@/helpers/api";
+import ListPreviewPosters from "./ListPreviewPosters";
 
-type ListProps = {
-    listId: number;
+type ListPreviewProps = {
+    list: ListInterface;
     isOwner: boolean;
+    lastIndex: boolean;
 };
 
-const getMoviesByListId = async (listId: number) => {
-    try {
-        const responseMovies = await axios({
-            url:
-                process.env.NEXT_PUBLIC_URL +
-                `/api/lists/${listId}/movies?limit=5`,
-            method: "GET",
-        });
-        const movies = responseMovies.data.movies;
-        if (!movies || responseMovies.status >= 300) {
-            return null;
-        }
-        console.log("MOVIES", movies);
-        return movies;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-};
-
-export default function ListPreview({ list, isOwner, lastIndex }) {
-    const [postersUrls, setPostersUrls] = useState([]);
+export default function ListPreview({
+    list,
+    isOwner,
+    lastIndex,
+}: ListPreviewProps) {
+    const [movies, setMovies] = useState<MovieInterface[]>([]);
     useEffect(() => {
-        getMoviesByListId(list.id).then((movies) =>
-            setPostersUrls((urls) => {
-                const posters = movies.map((mv) => {
-                    return mv.movie.poster_path;
-                });
-                console.log("posters", posters);
-                return posters;
-            }),
-        );
+        getMoviesByListId(list.id, 5).then((movies) => {
+            setMovies(movies.map((movie) => movie.movie));
+        });
     }, [list.id]);
-
     return (
         <div
             className={`border border-cyan-100/40 px-2 py-4 ${lastIndex === false ? "border-b-transparent" : ``} `}
         >
             <div className="flex items-center">
-                <div className="flex">
-                    {Array(5)
-                        .fill(null)
-                        .map((item, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    style={{
-                                        transform: `translateX(-${index * 15}%)`,
-                                        zIndex: `${5 - index}`,
-                                        height: "98px",
-                                        width: "60px",
-                                        backgroundColor: "#1c1c1c",
-                                    }}
-                                    className="overflow-clip rounded-sm shadow-2xl"
-                                >
-                                    {index < length && postersUrls[index] ? (
-                                        <Image
-                                            style={{
-                                                height: "100%",
-                                            }}
-                                            src={`https://image.tmdb.org/t/p/original/${postersUrls[index]}`}
-                                            alt={movies[index].title}
-                                            height={90}
-                                            width={60}
-                                        ></Image>
-                                    ) : index < length &&
-                                      !movies[index].poster_path ? (
-                                        <div
-                                            className="border border-gray-300/20"
-                                            style={{
-                                                height: "100%",
-                                                backgroundColor: "#1c1c1c",
-                                                color: "#cbd5e1",
-                                                fontSize: "0.735em",
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                fontStyle: "italic",
-                                            }}
-                                        >
-                                            <p>{movies[index].title}</p>
-                                            <p>
-                                                (
-                                                {
-                                                    movies[
-                                                        index
-                                                    ].release_date.split("-")[0]
-                                                }
-                                                )
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <div className="h-full border border-gray-300/10"></div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                </div>
+                <ListPreviewPosters
+                    postersUrls={movies.map((mv) => {
+                        return { title: mv.title, path: mv.poster_path };
+                    })}
+                ></ListPreviewPosters>
                 <div>
                     <div className="flex items-center gap-2">
                         <div className="text-lg font-bold">
@@ -122,7 +48,7 @@ export default function ListPreview({ list, isOwner, lastIndex }) {
                         )}
                     </div>
                     <div className="text-xs text-gray-400">
-                        <div>{length} movies</div>
+                        <div>{movies.length} movies</div>
                         <div className="flex items-center gap-1">
                             {list.likesCount}{" "}
                             <Heart

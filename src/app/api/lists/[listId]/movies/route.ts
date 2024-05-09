@@ -9,6 +9,7 @@ export async function GET(
         const listId = Number(params.listId);
         const searchParams = req.nextUrl.searchParams;
         const limit = Number(searchParams.get("limit"));
+
         if (isNaN(listId) || isNaN(limit)) {
             throw new Error();
         }
