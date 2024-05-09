@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Edit from "@/components/svgs/Edit";
 import Heart from "@/components/svgs/Heart";
 import Link from "next/link";
@@ -21,11 +20,26 @@ export default function ListPreview({
     lastIndex,
 }: ListPreviewProps) {
     const [movies, setMovies] = useState<MovieInterface[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
     useEffect(() => {
-        getMoviesByListId(list.id, 5).then((movies) => {
-            setMovies(movies.map((movie) => movie.movie));
-        });
+        getMoviesByListId(list.id, 5)
+            .then((movies) => {
+                setMovies(movies.map((movie) => movie.movie));
+            })
+            .catch((e) => {
+                console.error(e);
+                setIsError(true);
+            })
+            .finally(() => setIsLoading(false));
     }, [list.id]);
+
+    if (isLoading) {
+        return <div>loading...</div>;
+    }
+    if (isError) {
+        return <div>Error while loading.</div>;
+    }
     return (
         <div
             className={`border border-cyan-100/40 px-2 py-4 ${lastIndex === false ? "border-b-transparent" : ``} `}

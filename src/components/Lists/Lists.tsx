@@ -36,7 +36,6 @@ export default function Lists({
     if (lists.length === 0) {
         return <div> no lists </div>;
     }
-    console.log("rendering lists");
     return (
         <div className="my-4">
             {lists.map((list, index) => {
