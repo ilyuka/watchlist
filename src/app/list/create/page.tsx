@@ -17,6 +17,8 @@ export default async function Page() {
                     title={"New List"}
                     moviesProp={[]}
                     user={session.user}
+                    listData={{ title: "", description: "" }}
+                    type="create"
                 ></CreateForm>
             </div>
         </main>

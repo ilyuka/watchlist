@@ -11,6 +11,11 @@ export async function GET(
             throw new Error();
         }
         const lists = await prisma.list.findMany({
+            orderBy: [
+                {
+                    createdAt: "asc",
+                },
+            ],
             where: {
                 userId: userId,
             },

@@ -7,17 +7,22 @@ import Textarea from "@/components/ListForm/Textarea";
 import Link from "next/link";
 import Movies from "@/components/ListForm/Movies";
 import SearchField from "@/components/SearchField/SearchField";
-import { createList } from "@/actions/listForm";
+import { createList, updateList } from "@/actions/listForm";
 import { NotificationsContext } from "@/components/Notifications";
 import { useRouter } from "next/navigation";
 import { moviesReducer } from "@/helpers/reducers/moviesReducer";
 
-export default function Form({ title, moviesProp, user }) {
+export default function Form({ title, moviesProp, user, listData, type }) {
     const router = useRouter();
     const { notify } = useContext(NotificationsContext);
     const [movies, dispatchMovies] = useReducer(moviesReducer, moviesProp);
     console.log("MOVIES", movies);
-    const methods = useForm();
+    const methods = useForm({
+        defaultValues: {
+            title: listData.title || "",
+            description: listData.description || "",
+        },
+    });
 
     const moviesAreValid = () => {
         if (movies.length === 0) {
@@ -61,8 +66,13 @@ export default function Form({ title, moviesProp, user }) {
                     if (!moviesAreValid()) {
                         return;
                     }
-                    await createList(data, user, movies);
-                    notify("List has been successfully created!");
+                    if (type === "create") {
+                        await createList(data, user, movies, listData.id);
+                        notify("List has been successfully created!");
+                    } else if (type === "eidt") {
+                        await updateList(data, user, movies, listData.id);
+                        notify("List has been successfully updated!");
+                    }
                     router.push(`/${user.username}/lists`);
                 })}
                 className="max-w-4xl"
