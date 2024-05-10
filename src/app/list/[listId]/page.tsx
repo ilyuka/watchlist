@@ -1,12 +1,11 @@
-import Movie from "@/components/Movie/Movie";
-
 import { auth } from "@/helpers/auth";
 import { getListByListId } from "@/actions/list";
 import { getAllMoviesFromList } from "@/actions/movies";
-import { getUserByUsername } from "@/actions/user";
 import { getMoviesLikes } from "@/actions/movies";
 import { notFound } from "next/navigation";
 import { getWatchlistMovies } from "@/actions/watchlist";
+import Movie from "@/components/Movie/Movie";
+import React, { memo } from "react";
 
 export default async function Page({ params }) {
     const [list, movies, session] = await Promise.all([
@@ -50,7 +49,13 @@ export default async function Page({ params }) {
             <div>
                 <p>List by {listOwner.username}</p>
             </div>
-            <div className="text-2xl font-bold">
+            <div
+                className={
+                    session && list.id === user.watchlistId
+                        ? "text-2xl font-bold text-orange-300"
+                        : "text-2xl font-bold"
+                }
+            >
                 <h1>{list.title}</h1>
             </div>
             <div className="text-zinc-400">
@@ -69,7 +74,7 @@ export default async function Page({ params }) {
                             movie={movie}
                             movieId={movie.movie.tmdbId}
                             listId={Number(params.listId)}
-                            userOwner={listOwner}
+                            listOwner={listOwner}
                             isLiked={likes.find(
                                 (like) => like.movieId === movie.movie.tmdbId,
                             )}
@@ -86,6 +91,7 @@ export default async function Page({ params }) {
                             movie={movie}
                             movieId={movie.movie.tmdbId}
                             listId={Number(params.listId)}
+                            listOwner={listOwner}
                             isLiked={false}
                             userId={-1}
                             inWatchlist_={false}

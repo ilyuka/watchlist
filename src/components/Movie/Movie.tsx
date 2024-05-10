@@ -19,7 +19,7 @@ export default function Movie({
     userId,
     movieId,
     listId,
-    userOwner,
+    listOwner,
 }) {
     const [showOptions, setShowOptions] = useState(false);
     const [liked, setLiked] = useState(isLiked);
@@ -56,7 +56,7 @@ export default function Movie({
     return (
         <MovieContext.Provider
             value={{
-                userOwner,
+                listOwner,
                 liked,
                 listId,
                 movie,

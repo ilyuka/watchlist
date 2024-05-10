@@ -10,7 +10,7 @@ export default function MoreOptions({
     toggleInWatchlist,
     inWatchlist,
 }) {
-    const { userOwner, userId, liked, hideMoreOptions, movieId } =
+    const { listOwner, userId, liked, hideMoreOptions, movieId } =
         useContext(MovieContext);
 
     const [mouseEntered, setMouseEntered] = useState(false);
@@ -52,7 +52,7 @@ export default function MoreOptions({
                     handleClick={toggleInWatchlist}
                 ></Option>
                 <AddToListsOption></AddToListsOption>
-                {userOwner.id === userId && <RemoveFromListOption />}
+                {listOwner.id === userId && <RemoveFromListOption />}
 
                 <Link
                     className="w-full border-t border-t-stone-500 px-4 py-3 text-center hover:bg-stone-500"

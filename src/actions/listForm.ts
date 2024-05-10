@@ -24,6 +24,7 @@ const createList = async (data: FieldValues, user, movies) => {
                 },
             });
 
+            // Add the new movies to the list
             for (let i = 0; i < movies.length; i += 1) {
                 const movieId = movies[i].id;
                 const movieInDatabase = await prisma.movie.findFirst({
@@ -44,15 +45,26 @@ const createList = async (data: FieldValues, user, movies) => {
                             original_language: movies[i].original_language,
                         },
                     });
+
+                    const newMovieOnList = await prisma.movieOnList.create({
+                        data: {
+                            listId: newList.id,
+                            movieId: movie.id,
+                            positionOnTheList: i,
+                        },
+                    });
+                } else {
+                    console.log("IN db", movieInDatabase.id, newList.id, i);
+                    const newMovieOnList = await prisma.movieOnList.create({
+                        data: {
+                            listId: newList.id,
+                            movieId: movieInDatabase.id,
+                            positionOnTheList: i,
+                        },
+                    });
                 }
-                const newMovieOnList = await prisma.movieOnList.create({
-                    data: {
-                        listId: newList.id,
-                        movieId: movieId,
-                        positionOnTheList: i,
-                    },
-                });
             }
+
             return { status: 200 };
         });
         return transaction;
@@ -114,15 +126,24 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                             original_language: movies[i].original_language,
                         },
                     });
-                    console.log("added new movie");
+
+                    const newMovieOnList = await prisma.movieOnList.create({
+                        data: {
+                            listId: listId,
+                            movieId: movie.id,
+                            positionOnTheList: i,
+                        },
+                    });
+                } else {
+                    console.log("IN db", movieInDatabase.id, listId, i);
+                    const newMovieOnList = await prisma.movieOnList.create({
+                        data: {
+                            listId: listId,
+                            movieId: movieInDatabase.id,
+                            positionOnTheList: i,
+                        },
+                    });
                 }
-                const newMovieOnList = await prisma.movieOnList.create({
-                    data: {
-                        listId: listId,
-                        movieId: movieId,
-                        positionOnTheList: i,
-                    },
-                });
             }
 
             return { status: 200 };

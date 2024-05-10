@@ -57,7 +57,7 @@ model MovieOnList {
   movieId           Int
   positionOnTheList Int   @default(1)
   list              List  @relation(fields: [listId], references: [id], onDelete: Cascade)
-  movie             Movie @relation(fields: [movieId], references: [tmdbId], onDelete: Cascade)
+  movie             Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   @@unique([listId, movieId, positionOnTheList]) // ensures that the same movie can’t be added to the same list more than once.
 }
