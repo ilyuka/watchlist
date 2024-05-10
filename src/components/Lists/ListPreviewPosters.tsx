@@ -17,7 +17,7 @@ export default function ListPreviewPosters({ postersUrls }: props) {
                             style={{
                                 transform: `translateX(-${index * 15}%)`,
                                 zIndex: `${5 - index}`,
-                                height: "98px",
+                                height: "90px",
                                 width: "60px",
                                 backgroundColor: "#1c1c1c",
                             }}

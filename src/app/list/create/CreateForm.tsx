@@ -69,7 +69,7 @@ export default function Form({ title, moviesProp, user, listData, type }) {
                     if (type === "create") {
                         await createList(data, user, movies, listData.id);
                         notify("List has been successfully created!");
-                    } else if (type === "eidt") {
+                    } else if (type === "edit") {
                         await updateList(data, user, movies, listData.id);
                         notify("List has been successfully updated!");
                     }

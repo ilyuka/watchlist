@@ -72,6 +72,14 @@ export async function POST(req: Request, res: Response) {
                     title: `watchlist_${user.username}`,
                 },
             });
+            await prisma.user.update({
+                where: {
+                    id: user.id,
+                },
+                data: {
+                    watchlistId: watchlist.id,
+                },
+            });
 
             return { user, watchlist };
         });

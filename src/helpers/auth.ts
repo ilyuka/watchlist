@@ -47,6 +47,7 @@ export const config = {
                     return {
                         id: user.id,
                         username: user.username,
+                        watchlistId: user.watchlistId,
                     };
                 } catch (error) {
                     console.log(error);
@@ -64,6 +65,7 @@ export const config = {
     },
     callbacks: {
         async session({ session, token }) {
+            console.log("token", token);
             session.user = token.user;
             return session;
         },
@@ -82,6 +84,6 @@ export function auth(
         | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
         | [NextApiRequest, NextApiResponse]
         | []
-): Promise<{ user: { id: number; username: string } }> {
+): Promise<{ user: { id: number; username: string; watchlistId: number } }> {
     return getServerSession(...args, config);
 }

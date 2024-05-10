@@ -36,4 +36,4 @@ export default async function RootLayout({
     );
 }
 
-// export const revalidate = 0;
+export const revalidate = 0;

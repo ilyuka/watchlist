@@ -11,6 +11,7 @@ import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
 export const MovieContext = createContext(null);
 
 export default function Movie({
+    authed,
     movie,
     isLiked,
     inWatchlist_,
@@ -101,40 +102,46 @@ export default function Movie({
                         width={125}
                     ></Image>
                 )}
+                {authed && (
+                    <ul className="options">
+                        <li>
+                            <button title="Add to liked" onClick={toggleLike}>
+                                <Heart
+                                    size={22}
+                                    fill={liked ? "orange" : SVG_FILL_COLOR}
+                                    color={"none"}
+                                ></Heart>
+                            </button>
+                        </li>
 
-                <ul className="options">
-                    <li>
-                        <button title="Add to liked" onClick={toggleLike}>
-                            <Heart
-                                size={22}
-                                fill={liked ? "orange" : SVG_FILL_COLOR}
-                                color={"none"}
-                            ></Heart>
-                        </button>
-                    </li>
-
-                    <li>
-                        <button
-                            title="Add to watchlist"
-                            onClick={toggleInWatchlist}
-                        >
-                            <Eye
-                                size={22}
-                                fill={"none"}
-                                color={inWatchlist ? "skyblue" : SVG_FILL_COLOR}
-                            ></Eye>
-                        </button>
-                    </li>
-                    <li>
-                        <button title="More options" onClick={showMoreOptions}>
-                            <DotsHorizontal
-                                size={24}
-                                fill={"none"}
-                                color={SVG_FILL_COLOR}
-                            ></DotsHorizontal>
-                        </button>
-                    </li>
-                </ul>
+                        <li>
+                            <button
+                                title="Add to watchlist"
+                                onClick={toggleInWatchlist}
+                            >
+                                <Eye
+                                    size={22}
+                                    fill={"none"}
+                                    color={
+                                        inWatchlist ? "skyblue" : SVG_FILL_COLOR
+                                    }
+                                ></Eye>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                title="More options"
+                                onClick={showMoreOptions}
+                            >
+                                <DotsHorizontal
+                                    size={24}
+                                    fill={"none"}
+                                    color={SVG_FILL_COLOR}
+                                ></DotsHorizontal>
+                            </button>
+                        </li>
+                    </ul>
+                )}
                 {showOptions && (
                     <MoreOptions
                         toggleLike={toggleLike}

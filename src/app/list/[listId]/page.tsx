@@ -1,31 +1,54 @@
-import { getListByListId, getWatchlistMovies } from "@/services/listService";
-import { allMoviesFromList } from "@/services/movieService";
 import Movie from "@/components/Movie/Movie";
-import { getUserByUsername } from "@/services/userService";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getMovieLikes } from "@/services/movieService";
-import { getWatchlistIdByUserId } from "@/services/listService";
+
+import { auth } from "@/helpers/auth";
+import { getListByListId } from "@/actions/list";
+import { getAllMoviesFromList } from "@/actions/movies";
+import { getUserByUsername } from "@/actions/user";
+import { getMoviesLikes } from "@/actions/movies";
+import { notFound } from "next/navigation";
+import { getWatchlistMovies } from "@/actions/watchlist";
 
 export default async function Page({ params }) {
-    const movies = await allMoviesFromList(Number(params.listId));
-    const movieIds = movies.map((movie) => movie.movie.tmdbId);
-    const list = await getListByListId(Number(params.listId));
-    const userOwner = await getUserByUsername(list.userId);
-    const session = await getServerSession(authOptions);
-    const user = session.user;
-    const likes = await getMovieLikes(user.id, movieIds);
-    const watchlistId = await getWatchlistIdByUserId(userOwner.id);
-    const watchlistMovies = await getWatchlistMovies(watchlistId.id);
-    const watchlistMoviesIds = watchlistMovies.map(
-        (movie) => movie.movie.tmdbId,
-    );
-    console.log("WATCHLISt MOVIES IDS", watchlistMoviesIds);
+    const [list, movies, session] = await Promise.all([
+        await getListByListId(Number(params.listId)),
+        await getAllMoviesFromList(Number(params.listId)),
+        await auth(),
+    ]);
+    if (!list || !movies) {
+        return notFound();
+    }
+
+    let listOwner = list.user;
+    let user;
+    let isOwner;
+    let likes;
+    let watchlistMovies;
+    let movieIds = movies.map((movie) => movie.movie.tmdbId);
+    let watchlistId;
+    let watchlistMoviesIds;
+
+    if (session) {
+        user = session.user;
+        isOwner = session.user.id === list.userId;
+        watchlistId = user.watchlistId;
+        [likes, watchlistMovies] = await Promise.all([
+            await getMoviesLikes(user.id, movieIds),
+            await getWatchlistMovies(watchlistId),
+        ]);
+        watchlistMoviesIds = watchlistMovies.map((movie) => movie.movie.tmdbId);
+    } else {
+        isOwner = false;
+    }
+
+    if (session && (!listOwner || !likes || !watchlistMovies)) {
+        console.log(listOwner, likes, watchlistMovies);
+        return <div>500 page</div>;
+    }
 
     return (
         <main className="mx-auto max-w-4xl  py-4">
             <div>
-                <p>List by {userOwner.username}</p>
+                <p>List by {listOwner.username}</p>
             </div>
             <div className="text-2xl font-bold">
                 <h1>{list.title}</h1>
@@ -39,21 +62,34 @@ export default async function Page({ params }) {
             </div>
             <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
                 {movies.map((movie) => {
-                    return (
+                    return session ? (
                         <Movie
+                            authed={!!session}
                             key={movie.id}
                             movie={movie}
+                            movieId={movie.movie.tmdbId}
                             listId={Number(params.listId)}
-                            userOwner={userOwner}
+                            userOwner={listOwner}
                             isLiked={likes.find(
                                 (like) => like.movieId === movie.movie.tmdbId,
                             )}
                             userId={user.id}
-                            movieId={movie.movie.tmdbId}
                             inWatchlist_={watchlistMoviesIds.includes(
                                 movie.movie.tmdbId,
                             )}
-                            watchlistId={watchlistId.id}
+                            watchlistId={watchlistId}
+                        ></Movie>
+                    ) : (
+                        <Movie
+                            authed={!!session}
+                            key={movie.id}
+                            movie={movie}
+                            movieId={movie.movie.tmdbId}
+                            listId={Number(params.listId)}
+                            isLiked={false}
+                            userId={-1}
+                            inWatchlist_={false}
+                            watchlistId={-1}
                         ></Movie>
                     );
                 })}

@@ -115,14 +115,3 @@ export const removeMovieFromList = async (listId, movieId) => {
         throw new Error("Database Error");
     }
 };
-
-/*
-
-    try {
-        
-    } catch(e) {
-        console.log(e);
-        throw new Error("Database Error");
-    }
-
-*/

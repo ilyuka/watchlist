@@ -8,112 +8,120 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  username String @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  lists List[]
-  likedLists ListLike[]
-  likedListComments ListCommentLike[]
-  likedMovies MovieLike[]
+  id                 Int                @id @default(autoincrement())
+  username           String             @unique
+  password           String
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  watchlistId        Int                @default(-1)
+  lists              List[]
+  likedLists         ListLike[]
+  likedListComments  ListCommentLike[]
+  likedMovies        MovieLike[]
   likedMovieComments MovieCommentLike[]
 }
 
 model List {
-  id Int @id @default(autoincrement())
-  isWatchlist Boolean @default(false)
-  userId Int @default(-1)
-  title String @default("My New List")
-  description String? @default("")
-  likesCount Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user User @relation(fields: [userId], references: [id])
-  movies MovieOnList[]
-  comments ListComment[]
-  likes ListLike[]
+  id          Int           @id @default(autoincrement())
+  isWatchlist Boolean       @default(false)
+  userId      Int           @default(-1)
+  title       String        @default("My New List")
+  description String?       @default("")
+  likesCount  Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  movies      MovieOnList[]
+  comments    ListComment[]
+  likes       ListLike[]
 }
 
 model Movie {
-  id Int @id @default(autoincrement())
-  tmdbId Int @unique
-  title String
-  release_date String
-  poster_path String?
-  backdrop_path String?
-  original_title String
-  overview String
+  id                Int            @id @default(autoincrement())
+  tmdbId            Int            @unique
+  title             String
+  release_date      String
+  poster_path       String?
+  backdrop_path     String?
+  original_title    String
+  overview          String
   original_language String
-  lists MovieOnList[]
-  likes MovieLike[]
-  comments MovieComment[]
+  lists             MovieOnList[]
+  likes             MovieLike[]
+  comments          MovieComment[]
 }
 
 model MovieOnList {
-  id Int @id @default(autoincrement())
-  listId Int
-  movieId Int
-  positionOnTheList Int @default(1)
-  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
-  movie Movie @relation(fields: [movieId], references: [tmdbId], onDelete: Cascade)
+  id                Int   @id @default(autoincrement())
+  listId            Int
+  movieId           Int
+  positionOnTheList Int   @default(1)
+  list              List  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  movie             Movie @relation(fields: [movieId], references: [tmdbId], onDelete: Cascade)
+
   @@unique([listId, movieId, positionOnTheList]) // ensures that the same movie can’t be added to the same list more than once.
 }
 
 model ListComment {
-  id Int @id @default(autoincrement())
-  text String
-  listId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  list List @relation(fields: [listId], references: [id])
-  likes ListCommentLike[]
+  id        Int               @id @default(autoincrement())
+  text      String
+  listId    Int
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  list      List              @relation(fields: [listId], references: [id])
+  likes     ListCommentLike[]
 }
+
 model MovieComment {
-  id Int @id @default(autoincrement())
-  text String
-  movieId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  movie Movie @relation(fields: [movieId], references: [tmdbId])
-  likes MovieCommentLike[]
+  id        Int                @id @default(autoincrement())
+  text      String
+  movieId   Int
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  movie     Movie              @relation(fields: [movieId], references: [tmdbId])
+  likes     MovieCommentLike[]
 }
 
 model ListLike {
-  id Int @id @default(autoincrement())
-  userId Int
-  listId Int
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  listId    Int
   createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+
   @@unique([userId, listId])
 }
+
 model ListCommentLike {
-  id Int @id @default(autoincrement())
-  userId Int
+  id        Int         @id @default(autoincrement())
+  userId    Int
   commentId Int
-  createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  comment ListComment @relation(fields: [commentId], references: [id])
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id])
+  comment   ListComment @relation(fields: [commentId], references: [id])
+
   @@unique([userId, commentId])
 }
+
 model MovieCommentLike {
-  id Int @id @default(autoincrement())
-  userId Int
+  id        Int          @id @default(autoincrement())
+  userId    Int
   commentId Int
-  createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  comment MovieComment @relation(fields: [commentId], references: [id])
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id])
+  comment   MovieComment @relation(fields: [commentId], references: [id])
+
   @@unique([userId, commentId])
 }
+
 model MovieLike {
-  id Int @id @default(autoincrement())
-  userId Int
-  movieId Int
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  movieId   Int
   createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  movie Movie @relation(fields: [movieId], references: [tmdbId])
+  user      User     @relation(fields: [userId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [tmdbId])
+
   @@unique([userId, movieId])
 }
-
-
