@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { MoviesContext } from "@/app/list/create/page";
-import { useContext } from "react";
 
 export type Results = {
     results: {
@@ -23,7 +21,6 @@ export type Results = {
 };
 
 export default function SearchFieldResults({ results, handleClick }: Results) {
-    const { movies, addMovie } = useContext(MoviesContext);
     return (
         <div className="z-10 max-h-60 max-w-80 overflow-y-auto border border-cyan-100 bg-cyan-950/40 text-white">
             {results.map((movie) => (
@@ -32,7 +29,7 @@ export default function SearchFieldResults({ results, handleClick }: Results) {
                     className=" flex w-full cursor-pointer items-center gap-4 border-b border-b-cyan-100 p-1 pr-2 hover:bg-cyan-700"
                     style={{ minHeight: "75px" }}
                     onClick={(e) => {
-                        addMovie(e, movie);
+                        handleClick(e, movie);
                     }}
                     type="button"
                 >

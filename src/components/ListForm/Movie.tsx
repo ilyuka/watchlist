@@ -5,7 +5,7 @@ import React from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import LinesHorizontal from "../svgs/LinesHorizontal";
 
-export default function Movie({ movies, movie, deleteMovie, index }) {
+export default function Movie({ movies, movie, dispatchMovies, index }) {
     console.log("MOVIE", movie);
     function getStyle(style, snapshot) {
         if (!snapshot.isDropAnimating) {
@@ -13,7 +13,7 @@ export default function Movie({ movies, movie, deleteMovie, index }) {
         }
         return {
             ...style,
-            // cannot be 0, but make it super tiny
+            // cannot be 0, but make it super short
             transitionDuration: `0.05s`,
         };
     }
@@ -45,7 +45,10 @@ export default function Movie({ movies, movie, deleteMovie, index }) {
                         <button
                             className="px-3"
                             onClick={(e) => {
-                                deleteMovie(movie.id);
+                                dispatchMovies({
+                                    type: "deleteMovie",
+                                    movieId: movie.id,
+                                });
                             }}
                         >
                             <X size={30} color="#ccfbf1" />

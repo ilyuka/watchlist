@@ -1,7 +1,8 @@
+"use client";
 import Movie from "./Movie";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
-export default function Movies({ movies, deleteMovie, setMovies }) {
+export default function Movies({ movies, dispatchMovies }) {
     const onDragEnd = (result) => {
         const { destination, source, draggableId } = result;
         if (!destination) {
@@ -13,12 +14,11 @@ export default function Movies({ movies, deleteMovie, setMovies }) {
         ) {
             return;
         }
-
-        const newMovies = [...movies];
-        const tmp = newMovies[source.index];
-        newMovies.splice(source.index, 1);
-        newMovies.splice(destination.index, 0, tmp);
-        setMovies(newMovies);
+        dispatchMovies({
+            type: "moveMovie",
+            sourceIndex: source.index,
+            destinationIndex: destination.index,
+        });
     };
 
     if (movies.length === 0) {
@@ -51,7 +51,7 @@ export default function Movies({ movies, deleteMovie, setMovies }) {
                                         index={index}
                                         movies={movies}
                                         movie={movie}
-                                        deleteMovie={deleteMovie}
+                                        dispatchMovies={dispatchMovies}
                                     ></Movie>
                                 );
                             })}

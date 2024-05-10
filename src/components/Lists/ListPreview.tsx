@@ -62,7 +62,11 @@ export default function ListPreview({
                         )}
                     </div>
                     <div className="text-xs text-gray-400">
-                        <div>{movies.length} movies</div>
+                        <div>
+                            {movies.length === 1
+                                ? `${movies.length} movie`
+                                : `${movies.length} movies`}
+                        </div>
                         <div className="flex items-center gap-1">
                             {list.likesCount}{" "}
                             <Heart

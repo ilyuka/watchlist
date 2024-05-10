@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchMovieData, fetchMoviesData } from "@/app/api/data";
+import { fetchMoviesData } from "@/app/api/data";
 import SearchFieldResults from "./SearchFieldResults";
 
 type Props = {
@@ -9,8 +9,6 @@ type Props = {
 };
 
 export default function SearchField({ handleClick }) {
-    // const { data: session, status } = useSession();
-
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [timer, setTimer] = useState(null);
