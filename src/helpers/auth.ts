@@ -65,7 +65,7 @@ export const config = {
     },
     callbacks: {
         async session({ session, token }) {
-            console.log("token", token);
+            // console.log("token", token);
             session.user = token.user;
             return session;
         },

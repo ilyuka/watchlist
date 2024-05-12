@@ -9,7 +9,7 @@ export default async function Navbar() {
     const username = session?.user.username;
 
     return (
-        <nav className="w-screen bg-slate-950/20">
+        <nav className="relative z-10 w-screen bg-slate-950/20">
             <div className="mx-auto flex max-w-4xl justify-between px-4 py-4">
                 <div>
                     <Link href="/">
