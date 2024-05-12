@@ -17,3 +17,21 @@ export const getWatchlistMovies = async (watchlistId) => {
         throw new Error("Database Error");
     }
 };
+
+export const isMovieInWatchlist = async (movieId, watchlistId) => {
+    try {
+        const movieOnList = await prisma.movieOnList.findFirst({
+            where: {
+                listId: Number(watchlistId),
+                movieId: Number(movieId),
+            },
+        });
+
+        if (!movieOnList) {
+            return false;
+        }
+        return true;
+    } catch (e) {
+        console.error(e);
+    }
+};

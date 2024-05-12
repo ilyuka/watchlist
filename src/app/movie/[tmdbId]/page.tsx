@@ -3,22 +3,48 @@ import { fetchMovieData } from "@/app/api/data";
 import MoviePage from "@/components/MoviePage/MoviePage";
 import "./localOverwrite.css";
 import { getPlaiceholder } from "plaiceholder";
+import { auth } from "@/helpers/auth";
+import { isMovieInWatchlist } from "@/actions/watchlist";
+import { isMovieLiked } from "@/actions/movieLike";
 
 export default async function Page({ params }) {
-    console.log(params);
-    let movie;
-    movie = await getMovieByTmdbId(params.tmdbId);
+    let [session, movie] = await Promise.all([
+        auth(),
+        getMovieByTmdbId(Number(params.tmdbId)),
+    ]);
+
+    let user;
+    let inWatchlist;
+    let isLiked;
+
     if (movie.error) {
         movie = await fetchMovieData(params.tmdbId);
         await addMovieToDb(movie);
+    } else {
+        movie = movie.movie;
     }
+
+    if (session) {
+        user = session.user;
+        let watchlistId = user.watchlistId;
+        [inWatchlist, isLiked] = await Promise.all([
+            isMovieInWatchlist(movie.id, watchlistId),
+            isMovieLiked(movie.id, user.id),
+        ]);
+    }
+
     const base64 =
-        movie.movie.backdrop_path &&
-        (await getBase64(movie.movie.backdrop_path));
+        movie.backdrop_path && (await getBase64(movie.backdrop_path));
+
     return (
         <main className="moviePage ">
             <div className="mx-auto max-w-7xl">
-                <MoviePage movie={movie.movie} base64={base64}></MoviePage>
+                <MoviePage
+                    movie={movie}
+                    inWatchlist={inWatchlist}
+                    isLiked={isLiked}
+                    base64={base64}
+                ></MoviePage>
             </div>
         </main>
     );
