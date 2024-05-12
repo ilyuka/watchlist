@@ -12,11 +12,9 @@ export default async function Page({ params }) {
         movie = await fetchMovieData(params.tmdbId);
         await addMovieToDb(movie);
     }
-    const src = `https://image.tmdb.org/t/p/w500${movie.movie.backdrop_path}`;
-    const buffer = await fetch(src).then(async (res) =>
-        Buffer.from(await res.arrayBuffer()),
-    );
-    const { base64 } = await getPlaiceholder(buffer);
+    const base64 =
+        movie.movie.backdrop_path &&
+        (await getBase64(movie.movie.backdrop_path));
     return (
         <main
             className="mx-auto max-w-7xl"
@@ -28,4 +26,13 @@ export default async function Page({ params }) {
     // Movie client component
     // side component: movie options
     // comments component
+}
+
+async function getBase64(backdrop_path) {
+    const src = `https://image.tmdb.org/t/p/w500${backdrop_path}`;
+    const buffer = await fetch(src).then(async (res) =>
+        Buffer.from(await res.arrayBuffer()),
+    );
+    const { base64 } = await getPlaiceholder(buffer);
+    return base64;
 }
