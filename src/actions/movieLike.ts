@@ -36,3 +36,19 @@ export const addMovieLike = async (userId, movieId) => {
         throw new Error("Database Error");
     }
 };
+
+export const removeMovieLike = async (userId, movieId) => {
+    try {
+        const removal = await prisma.movieLike.delete({
+            where: {
+                userId_movieId: {
+                    userId: Number(userId),
+                    movieId: Number(movieId),
+                },
+            },
+        });
+        console.log("removal", removal);
+    } catch (e) {
+        console.error(e);
+    }
+};

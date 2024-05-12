@@ -78,7 +78,7 @@ model MovieComment {
   movieId   Int
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
-  movie     Movie              @relation(fields: [movieId], references: [tmdbId])
+  movie     Movie              @relation(fields: [movieId], references: [id])
   likes     MovieCommentLike[]
 }
 
@@ -116,12 +116,11 @@ model MovieCommentLike {
 }
 
 model MovieLike {
-  id        Int      @id @default(autoincrement())
   userId    Int
   movieId   Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  movie     Movie    @relation(fields: [movieId], references: [tmdbId])
+  movie     Movie    @relation(fields: [movieId], references: [id])
 
-  @@unique([userId, movieId])
+  @@id([userId, movieId])
 }

@@ -9,7 +9,7 @@ import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
 import Poster from "../Lists/Poster";
 import MainOptions from "./MainOptions";
 import LikeButton from "../ActionButtons/LikeButton";
-import { addMovieLike } from "@/actions/movieLike";
+import { addMovieLike, removeMovieLike } from "@/actions/movieLike";
 
 export const MovieContext = createContext(null);
 
@@ -42,10 +42,9 @@ export default function Movie({
         setLiked(newLiked);
         if (newLiked === true) {
             await addMovieLike(Number(userId), Number(movieId));
+        } else {
+            await removeMovieLike(Number(userId), Number(movieId));
         }
-        // } else {
-        //     await removeMovieLike(Number(userId), Number(movieId));
-        // }
     };
     const showMoreOptions = () => {
         setShowOptions(true);
