@@ -1,6 +1,6 @@
 import { addMovieToList } from "@/services/movieService";
 import { useContext } from "react";
-import { NotificationsContext } from "../Notifications";
+import { NotificationsContext } from "@/components/providers/MyNotificationProvider";
 import { MovieContext } from "./Movie";
 
 export default function AddToListsMovie({ list }) {

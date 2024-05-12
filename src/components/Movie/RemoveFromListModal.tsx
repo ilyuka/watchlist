@@ -3,7 +3,7 @@ import X from "../svgs/X";
 import Button from "../Utils/Button";
 import { useContext } from "react";
 import { MovieContext } from "./Movie";
-import { NotificationsContext } from "../Notifications";
+import { NotificationsContext } from "@/components/providers/MyNotificationProvider";
 import { useRouter } from "next/navigation";
 
 export default function RemoveFromListModal({ movie, hide }) {

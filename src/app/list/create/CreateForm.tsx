@@ -8,7 +8,7 @@ import Link from "next/link";
 import Movies from "@/components/ListForm/Movies";
 import SearchField from "@/components/SearchField/SearchField";
 import { createList, updateList } from "@/actions/listForm";
-import { NotificationsContext } from "@/components/Notifications";
+import { NotificationsContext } from "@/components/providers/MyNotificationProvider";
 import { useRouter } from "next/navigation";
 import { moviesReducer } from "@/helpers/reducers/moviesReducer";
 

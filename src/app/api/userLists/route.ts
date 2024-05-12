@@ -6,7 +6,6 @@ export async function GET(req: Request, res: Response) {
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get("userId") || "";
         const movieId = searchParams.get("movieId") || "";
-
         const lists = await prisma.list.findMany({
             where: {
                 userId: Number(userId),
@@ -17,18 +16,19 @@ export async function GET(req: Request, res: Response) {
                 title: true,
                 movies: {
                     select: {
-                        movieId: true,
+                        id: true,
                     },
                 },
             },
         });
+        console.log("LISTS", lists[1]);
 
         const shortenedLists = lists.map((list, index) => {
             return {
                 id: list.id,
                 title: list.title,
                 hasMovie: list.movies.find(
-                    (mv) => mv.movieId === Number(movieId),
+                    (mv) => mv.tmdbId === Number(movieId),
                 )
                     ? true
                     : false,

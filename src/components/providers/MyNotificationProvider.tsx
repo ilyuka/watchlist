@@ -1,11 +1,10 @@
 "use client";
-
 import { useState, useEffect, createContext } from "react";
-import NotificationMessage from "./NotificationMessage";
+import NotificationMessage from "@/components/Notifications/NotificationMessage";
 
 export const NotificationsContext = createContext([]);
 
-export default function Notification({ children }) {
+export default function MyNotificationProvider({ children }) {
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState("");
 
