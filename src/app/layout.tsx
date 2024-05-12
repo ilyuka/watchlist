@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { auth } from "@/helpers/auth";
 import MyAppProvider from "@/components/providers/MyAppProvider";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
