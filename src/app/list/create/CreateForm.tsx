@@ -38,12 +38,12 @@ export default function Form({ title, moviesProp, user, listData, type }) {
             return;
         }
 
-        const inTheList = movies.some((mv) => mv.id === movie.id);
+        const inTheList = movies.some((mv) => mv.tmdbId === movie.id);
         if (!inTheList) {
             dispatchMovies({
                 type: "addMovie",
                 newMovie: {
-                    id: movie.id,
+                    tmdbId: movie.id,
                     title: movie.title,
                     release_date: movie.release_date,
                     poster_path: movie.poster_path,

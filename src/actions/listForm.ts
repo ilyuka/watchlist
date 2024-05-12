@@ -26,7 +26,7 @@ const createList = async (data: FieldValues, user, movies) => {
 
             // Add the new movies to the list
             for (let i = 0; i < movies.length; i += 1) {
-                const movieId = movies[i].id;
+                const movieId = movies[i].tmdbId;
                 const movieInDatabase = await prisma.movie.findFirst({
                     where: {
                         tmdbId: movieId,
@@ -35,7 +35,7 @@ const createList = async (data: FieldValues, user, movies) => {
                 if (!movieInDatabase) {
                     const movie = await prisma.movie.create({
                         data: {
-                            tmdbId: movies[i].id,
+                            tmdbId: movies[i].tmdbId,
                             title: movies[i].title,
                             release_date: movies[i].release_date,
                             poster_path: movies[i].poster_path,
@@ -45,6 +45,7 @@ const createList = async (data: FieldValues, user, movies) => {
                             original_language: movies[i].original_language,
                         },
                     });
+                    console.log("CREATED", movie);
 
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {
@@ -105,9 +106,11 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                 },
             });
 
+            console.log("DB RECIEVED movies", movies);
             // Add the new movies to the list
             for (let i = 0; i < movies.length; i += 1) {
-                const movieId = movies[i].id;
+                const movieId = movies[i].tmdbId;
+                console.log("MOVIE ID IN DB", movieId);
                 const movieInDatabase = await prisma.movie.findFirst({
                     where: {
                         tmdbId: movieId,
@@ -116,7 +119,7 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                 if (!movieInDatabase) {
                     const movie = await prisma.movie.create({
                         data: {
-                            tmdbId: movies[i].id,
+                            tmdbId: movies[i].tmdbId,
                             title: movies[i].title,
                             release_date: movies[i].release_date,
                             poster_path: movies[i].poster_path,
@@ -126,6 +129,7 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                             original_language: movies[i].original_language,
                         },
                     });
+                    console.log("UPDATED");
 
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {

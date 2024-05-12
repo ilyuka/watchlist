@@ -1,6 +1,13 @@
 import BackdropPoster from "./BackdropPoster";
+import Movie from "../Movie/Movie";
 
-export default function MoviePage({ movie, inWatchlist, isLiked, base64 }) {
+export default function MoviePage({
+    user,
+    movie,
+    inWatchlist,
+    isLiked,
+    base64,
+}) {
     return (
         <div>
             {movie.backdrop_path && (
@@ -9,7 +16,18 @@ export default function MoviePage({ movie, inWatchlist, isLiked, base64 }) {
                     base64={base64}
                 ></BackdropPoster>
             )}
-            <div>{/* <Movie></Movie> */}</div>
+            {user ? (
+                <Movie
+                    user={user}
+                    movie={movie}
+                    inWatchlist={inWatchlist}
+                    isLiked={isLiked}
+                    width={100}
+                    height={250}
+                ></Movie>
+            ) : (
+                <GuestMovie></GuestMovie>
+            )}
         </div>
     );
 }

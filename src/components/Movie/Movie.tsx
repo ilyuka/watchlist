@@ -1,48 +1,51 @@
 "use client";
-import Image from "next/image";
 import Heart from "../svgs/Heart";
 import Eye from "../svgs/Eye";
 import DotsHorizontal from "../svgs/DotsHorizontal";
 import { useState, createContext } from "react";
 import MoreOptions from "./MoreOptions";
-import { addMovieLike, removeMovieLike } from "@/services/movieService";
+// import { addMovieLike, removeMovieLike } from "@/services/movieService";
 import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
+import Poster from "../Lists/Poster";
+import MainOptions from "./MainOptions";
+import LikeButton from "../ActionButtons/LikeButton";
+import { addMovieLike } from "@/actions/movieLike";
 
 export const MovieContext = createContext(null);
 
 export default function Movie({
-    authed,
+    user,
     movie,
     isLiked,
-    inWatchlist_,
-    watchlistId,
-    userId,
-    movieId,
-    listId,
-    listOwner,
+    inWatchlist,
+    width,
+    height,
+    listId = -1,
+    listOwner = null,
 }) {
     const [showOptions, setShowOptions] = useState(false);
     const [liked, setLiked] = useState(isLiked);
-    const [inWatchlist, setInWatchlist] = useState(inWatchlist_);
+    const [inWatchlistState, setInWatchlistState] = useState(inWatchlist);
 
-    const toggleInWatchlist = async () => {
-        const newInWatchlist = !inWatchlist;
-        setInWatchlist(newInWatchlist);
-        if (newInWatchlist === true) {
-            await addToWatchlist(watchlistId, movieId);
-        } else {
-            await removeFromWatchlist(watchlistId, movieId);
-        }
-    };
-
-    const toggleLike = async () => {
+    // const toggleInWatchlist = async () => {
+    //     const newInWatchlist = !inWatchlist;
+    //     setInWatchlist(newInWatchlist);
+    //     if (newInWatchlist === true) {
+    //         await addToWatchlist(watchlistId, movieId);
+    //     } else {
+    //         await removeFromWatchlist(watchlistId, movieId);
+    //     }
+    // };
+    console.log("movie IN MOVIE", movie);
+    const toggleLike = async (userId, movieId) => {
         const newLiked = !liked;
         setLiked(newLiked);
         if (newLiked === true) {
             await addMovieLike(Number(userId), Number(movieId));
-        } else {
-            await removeMovieLike(Number(userId), Number(movieId));
         }
+        // } else {
+        //     await removeMovieLike(Number(userId), Number(movieId));
+        // }
     };
     const showMoreOptions = () => {
         setShowOptions(true);
@@ -55,54 +58,37 @@ export default function Movie({
 
     return (
         <MovieContext.Provider
-            value={{
-                listOwner,
-                liked,
-                listId,
-                movie,
-                movieId,
-                userId,
-                hideMoreOptions,
-            }}
+            value={1}
+            // value={{
+            //     listOwner,
+            //     liked,
+            //     listId,
+            //     movie,
+            //     movieId,
+            //     userId,
+            //     hideMoreOptions,
+            // }}
         >
-            <div
-                className="movie-poster relative flex flex-col items-center rounded-sm"
-                style={{
-                    height: "187px",
-                    width: "125px",
-                }}
-            >
-                {movie.movie.poster_path == null ? (
-                    <div
-                        style={{
-                            height: "187px",
-                            width: "125px",
-                            background: "#1c1c1ccc",
-                            display: "grid",
-                            placeItems: "center",
-                            border: "1px solid #71717aaa",
-                            color: "#d1d5db",
-                        }}
-                    >
-                        <div className="text-center">
-                            <p>{movie.movie.title}</p>
-                            <p>({movie.movie.release_date.split("-")[0]})</p>
-                        </div>
-                    </div>
-                ) : (
-                    <Image
-                        style={{
-                            height: "100%",
-                            width: "100%",
-                            objectFit: "fill",
-                        }}
-                        src={`https://image.tmdb.org/t/p/original/${movie.movie.poster_path}`}
-                        alt={movie.movie.title}
-                        height={187}
-                        width={125}
-                    ></Image>
-                )}
-                {authed && (
+            <div className="movie-poster relative flex flex-col items-center rounded-sm">
+                <Poster
+                    title={
+                        movie.title +
+                        " (" +
+                        movie.release_date.split("-")[0] +
+                        ")"
+                    }
+                    path={movie.poster_path}
+                    height={height}
+                    width={width}
+                ></Poster>
+                <MainOptions>
+                    <LikeButton
+                        handleClick={(e) => toggleLike(user.id, movie.id)}
+                        size={22}
+                        liked={liked}
+                    ></LikeButton>
+                </MainOptions>
+                {/* {authed && (
                     <ul className="options">
                         <li>
                             <button title="Add to liked" onClick={toggleLike}>
@@ -148,7 +134,7 @@ export default function Movie({
                         toggleInWatchlist={toggleInWatchlist}
                         inWatchlist={inWatchlist}
                     ></MoreOptions>
-                )}
+                )} */}
             </div>
         </MovieContext.Provider>
     );

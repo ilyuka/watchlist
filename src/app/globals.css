@@ -63,8 +63,10 @@ body {
 }
 
 .movie-poster:hover > .options {
+    padding-block: 0.5rem;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 0.5rem;
 }
 

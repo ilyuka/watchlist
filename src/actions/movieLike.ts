@@ -17,3 +17,22 @@ export const isMovieLiked = async (movieId, userId) => {
         console.error(e);
     }
 };
+
+export const addMovieLike = async (userId, movieId) => {
+    console.log("recieved", userId, movieId);
+    try {
+        const like = await prisma.movieLike.create({
+            data: {
+                userId: userId,
+                movieId: movieId,
+            },
+        });
+        if (!like) {
+            throw new Error("Database Error");
+        }
+        return like;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};

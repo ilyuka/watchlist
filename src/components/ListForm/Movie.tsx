@@ -47,7 +47,7 @@ export default function Movie({ movies, movie, dispatchMovies, index }) {
                             onClick={(e) => {
                                 dispatchMovies({
                                     type: "deleteMovie",
-                                    movieId: movie.id,
+                                    movieId: movie.tmdbId,
                                 });
                             }}
                         >

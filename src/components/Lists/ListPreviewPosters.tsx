@@ -28,6 +28,8 @@ export default function ListPreviewPosters({ postersUrls }: props) {
                                 title={curr?.title}
                                 path={curr?.path}
                                 index={index}
+                                height={187}
+                                width={125}
                             />
                         </div>
                     );

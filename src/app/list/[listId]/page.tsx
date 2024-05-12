@@ -69,10 +69,10 @@ export default async function Page({ params }) {
                 {movies.map((movie) => {
                     return session ? (
                         <Movie
-                            authed={!!session}
+                            user={user}
                             key={movie.id}
-                            movie={movie}
-                            movieId={movie.movie.tmdbId}
+                            movie={movie.movie}
+                            movieId={movie.tmdbId}
                             listId={Number(params.listId)}
                             listOwner={listOwner}
                             isLiked={likes.find(
@@ -83,19 +83,23 @@ export default async function Page({ params }) {
                                 movie.movie.tmdbId,
                             )}
                             watchlistId={watchlistId}
+                            width={125}
+                            height={187}
                         ></Movie>
                     ) : (
                         <Movie
                             authed={!!session}
                             key={movie.id}
-                            movie={movie}
-                            movieId={movie.movie.tmdbId}
+                            movie={movie.movie}
+                            movieId={movie.tmdbId}
                             listId={Number(params.listId)}
                             listOwner={listOwner}
                             isLiked={false}
                             userId={-1}
                             inWatchlist_={false}
                             watchlistId={-1}
+                            width={125}
+                            height={187}
                         ></Movie>
                     );
                 })}

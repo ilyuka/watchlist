@@ -4,7 +4,7 @@ export function moviesReducer(state, action) {
             return [...state, action.newMovie];
         }
         case "deleteMovie": {
-            return state.filter((mv) => mv.id !== action.movieId);
+            return state.filter((mv) => mv.tmdbId !== action.movieId);
         }
         case "moveMovie": {
             const newMovies = [...state];

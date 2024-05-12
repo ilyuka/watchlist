@@ -40,6 +40,7 @@ export default async function Page({ params }) {
         <main className="moviePage ">
             <div className="mx-auto max-w-7xl">
                 <MoviePage
+                    user={user}
                     movie={movie}
                     inWatchlist={inWatchlist}
                     isLiked={isLiked}
