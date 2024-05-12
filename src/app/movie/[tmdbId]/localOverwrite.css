@@ -1,7 +1,9 @@
-body {
+body:has(.moviePage) {
     background: #141E30;
 }
 
-.nav {
-    /* background-color: rgb(2 6 23 / 0.2); */
+.moviePage {
+    position: relative;
+    top: -70px;
+
 }

@@ -16,11 +16,10 @@ export default async function Page({ params }) {
         movie.movie.backdrop_path &&
         (await getBase64(movie.movie.backdrop_path));
     return (
-        <main
-            className="mx-auto max-w-7xl"
-            style={{ position: "relative", top: "-67px" }}
-        >
-            <MoviePage movie={movie.movie} base64={base64}></MoviePage>
+        <main className="moviePage ">
+            <div className="mx-auto max-w-7xl">
+                <MoviePage movie={movie.movie} base64={base64}></MoviePage>
+            </div>
         </main>
     );
     // Movie client component

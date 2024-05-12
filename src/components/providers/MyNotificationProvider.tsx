@@ -35,17 +35,13 @@ export default function MyNotificationProvider({ children }) {
 
     return (
         <NotificationsContext.Provider value={{ message, notify }}>
-            <div>
-                <div
-                    className={`notification absolute mx-4 my-4 ${show ? "show" : ""}`}
-                >
-                    <NotificationMessage
-                        message={message}
-                    ></NotificationMessage>
-                </div>
-
-                {children}
+            <div
+                className={`notification absolute mx-4 my-4 ${show ? "show" : ""}`}
+            >
+                <NotificationMessage message={message}></NotificationMessage>
             </div>
+
+            {children}
         </NotificationsContext.Provider>
     );
 }
