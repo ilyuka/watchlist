@@ -4,17 +4,18 @@ import withPlaiceholder from "@plaiceholder/next";
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["image.tmdb.org"],
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "image.tmdb.org",
-                port: "",
-                pathname: "/**",
-            },
-        ],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '**.tmdb.org',
+        },
+        {
+          protocol: 'https',
+          hostname: 'tmdb-image-prod.b-cdn.net'
+        }
+      ],
     },
-};
+  };
 
 export default withPlaiceholder(nextConfig);
 

@@ -2,10 +2,10 @@ import { getMovieByTmdbId, addMovieToDb } from "@/actions/movie";
 import { fetchMovieData } from "@/app/api/data";
 import MoviePage from "@/components/MoviePage/MoviePage";
 import "./localOverwrite.css";
-import { getPlaiceholder } from "plaiceholder";
 import { auth } from "@/helpers/auth";
 import { isMovieInWatchlist } from "@/actions/watchlist";
 import { isMovieLiked } from "@/actions/movieLike";
+import getBase64 from "./getBase64";
 
 export default async function Page({ params }) {
     let [session, movie] = await Promise.all([
@@ -52,13 +52,4 @@ export default async function Page({ params }) {
     // Movie client component
     // side component: movie options
     // comments component
-}
-
-async function getBase64(backdrop_path) {
-    const src = `https://image.tmdb.org/t/p/w500${backdrop_path}`;
-    const buffer = await fetch(src).then(async (res) =>
-        Buffer.from(await res.arrayBuffer()),
-    );
-    const { base64 } = await getPlaiceholder(buffer);
-    return base64;
 }

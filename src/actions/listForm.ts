@@ -2,6 +2,7 @@
 
 import prisma from "@/../prisma/prisma";
 import { FieldValues } from "react-hook-form";
+import { revalidatePath } from "next/cache";
 
 const createList = async (data: FieldValues, user, movies) => {
     try {
@@ -65,7 +66,7 @@ const createList = async (data: FieldValues, user, movies) => {
                     });
                 }
             }
-
+            revalidatePath("/");
             return { status: 200 };
         });
         return transaction;
@@ -150,6 +151,7 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                 }
             }
 
+            revalidatePath("/");
             return { status: 200 };
         });
         return transaction;

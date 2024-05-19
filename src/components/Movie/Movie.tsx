@@ -2,7 +2,7 @@
 import Heart from "../svgs/Heart";
 import Eye from "../svgs/Eye";
 import DotsHorizontal from "../svgs/DotsHorizontal";
-import { useState, createContext } from "react";
+import { useState, createContext, useTransition } from "react";
 import MoreOptions from "./MoreOptions";
 // import { addMovieLike, removeMovieLike } from "@/services/movieService";
 import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
@@ -25,6 +25,7 @@ export default function Movie({
 }) {
     const [showOptions, setShowOptions] = useState(false);
     const [liked, setLiked] = useState(isLiked);
+    const [isPending, startTransition] = useTransition();
     const [inWatchlistState, setInWatchlistState] = useState(inWatchlist);
 
     // const toggleInWatchlist = async () => {
@@ -39,7 +40,9 @@ export default function Movie({
     console.log("movie IN MOVIE", movie);
     const toggleLike = async (userId, movieId) => {
         const newLiked = !liked;
-        setLiked(newLiked);
+        startTransition(() => {
+            setLiked(newLiked);
+        });
         if (newLiked === true) {
             await addMovieLike(Number(userId), Number(movieId));
         } else {
