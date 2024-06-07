@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/helpers/auth/getUser";
 import FormTitle from "@/components/ListForm/FormTitle";
 import Lists from "@/components/Lists/Lists";
-import { getUser } from "@/helpers/api";
+import { getUserByUsername } from "@/actions/user";
 
 export default async function Page({
     params,
@@ -15,7 +15,7 @@ export default async function Page({
         return notFound();
     }
     const [user, currentUser] = await Promise.all([
-        getUser(username),
+        getUserByUsername(username),
         getCurrentUser()
     ]);
     if (!user) {

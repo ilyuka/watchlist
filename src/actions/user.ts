@@ -2,11 +2,11 @@
 
 import prisma from "@/../prisma/prisma";
 
-export const getUserByUsername = async (userId: number) => {
+export const getUserByUsername = async (username: string) => {
     try {
         const user = await prisma.user.findFirst({
             where: {
-                id: userId,
+                username: username
             },
         });
         return user;
