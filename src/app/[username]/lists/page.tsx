@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { auth } from "@/helpers/auth";
+import { getCurrentUser } from "@/helpers/auth/getUser";
 import FormTitle from "@/components/ListForm/FormTitle";
 import Lists from "@/components/Lists/Lists";
 import { getUser } from "@/helpers/api";
@@ -14,13 +14,14 @@ export default async function Page({
     if (!username) {
         return notFound();
     }
-    const user = await getUser(username);
+    const [user, currentUser] = await Promise.all([
+        getUser(username),
+        getCurrentUser()
+    ]);
     if (!user) {
         return notFound();
     }
-    const session = await auth();
-    const isOwner =
-        session.user.id === user.id && session.user.username === user.username;
+    const isOwner = !!currentUser.id && currentUser.id === user.id;
     return (
         <main className="mx-auto max-w-4xl ">
             <FormTitle title={`${username}'s Lists`} />

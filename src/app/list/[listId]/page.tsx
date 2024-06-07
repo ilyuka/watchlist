@@ -1,4 +1,4 @@
-import { auth } from "@/helpers/auth";
+import { auth } from "@/helpers/auth/auth";
 import { getListByListId } from "@/actions/list";
 import { getAllMoviesFromList } from "@/actions/movies";
 import { getMoviesLikes } from "@/actions/movies";

@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/helpers/auth";
+import { auth } from "@/helpers/auth/auth";
 import { redirect } from "next/navigation";
 import CreateForm from "./CreateForm";
 

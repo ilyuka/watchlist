@@ -2,7 +2,7 @@ import { getMovieByTmdbId, addMovieToDb } from "@/actions/movie";
 import { fetchMovieData } from "@/app/api/data";
 import MoviePage from "@/components/MoviePage/MoviePage";
 import "./localOverwrite.css";
-import { auth } from "@/helpers/auth";
+import { auth } from "@/helpers/auth/auth";
 import { isMovieInWatchlist } from "@/actions/watchlist";
 import { isMovieLiked } from "@/actions/movieLike";
 import getBase64 from "./getBase64";

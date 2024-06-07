@@ -1,6 +1,6 @@
 "use server";
 import axios from "axios";
-import { auth } from "@/helpers/auth";
+import { auth } from "@/helpers/auth/auth";
 import { redirect } from "next/navigation";
 import CreateForm from "../../create/CreateForm";
 
