@@ -23,3 +23,20 @@ export const getListByListId = async (listId: number) => {
         throw new Error("Database Error");
     }
 };
+
+export const getAllUserLists = async (userId: number) => {
+    if (!userId) {
+        return null;
+    }
+    try {
+        const lists = await prisma.list.findMany({
+            where: {
+                userId: userId
+            }
+        });
+        return lists;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+}

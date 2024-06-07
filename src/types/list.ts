@@ -1,3 +1,5 @@
+import type { MovieInterface } from "./movie";
+
 interface ListInterface {
     id: number;
     isWatchlist: boolean;
@@ -7,6 +9,7 @@ interface ListInterface {
     likesCount: number;
     createdAt: Date;
     updatedAt: Date;
+    movies?: MovieInterface[]
 }
 
 export type { ListInterface };

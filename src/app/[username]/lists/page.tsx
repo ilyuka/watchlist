@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/helpers/auth/getUser";
 import FormTitle from "@/components/ListForm/FormTitle";
 import Lists from "@/components/Lists/Lists";
-import { getUserByUsername } from "@/actions/user";
+import { getUserDataForListsPreviews } from "@/actions/user";
 
 export default async function Page({
     params,
@@ -14,21 +14,24 @@ export default async function Page({
     if (!username) {
         return notFound();
     }
-    const [user, currentUser] = await Promise.all([
-        getUserByUsername(username),
-        getCurrentUser()
+    const [currentUser, listOwner] = await Promise.all([
+        getCurrentUser(),
+        getUserDataForListsPreviews(username),
     ]);
-    if (!user) {
+    if (!listOwner) {
         return notFound();
     }
-    const isOwner = !!currentUser.id && currentUser.id === user.id;
+    for (const list of listOwner.lists) {
+        console.log(list.movies);
+    }
+    const isOwner = !!currentUser.id && currentUser.id === listOwner.id;
     return (
         <main className="mx-auto max-w-4xl ">
             <FormTitle title={`${username}'s Lists`} />
             <div>
                 {isOwner && <Link href="/list/create">Start New List</Link>}
             </div>
-            <Lists isOwner={isOwner} user={user} />
+            <Lists lists={listOwner.lists} isOwner={isOwner} listOwner={listOwner} />
         </main>
     );
 }
