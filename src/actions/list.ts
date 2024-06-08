@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/../prisma/prisma";
+import { revalidatePath } from "next/cache";
 
 export const getListByListId = async (listId: number) => {
     try {
@@ -25,8 +26,18 @@ export const getListByListId = async (listId: number) => {
 };
 
 export const deleteListByListId = async (listId: number) => {
-    console.log("deleted list");
-}
+    try {
+        await prisma.list.delete({
+            where: {
+                id: listId,
+            },
+        });
+        revalidatePath("/");
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
 
 export const getAllUserLists = async (userId: number) => {
     if (!userId) {
@@ -35,12 +46,12 @@ export const getAllUserLists = async (userId: number) => {
     try {
         const lists = await prisma.list.findMany({
             where: {
-                userId: userId
-            }
+                userId: userId,
+            },
         });
         return lists;
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");
     }
-}
+};

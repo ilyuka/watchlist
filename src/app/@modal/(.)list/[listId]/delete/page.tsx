@@ -30,7 +30,7 @@ export default async function DeleteListModal({ params: { listId } }) {
                     </span>
                     ? There is no way to recover deleted data.
                 </div>
-                <div className="ml-auto flex gap-3">
+                <div className="flex justify-end">
                     <DeleteListButton list={list}></DeleteListButton>
                 </div>
             </div>

@@ -6,14 +6,16 @@ import { NotificationsContext } from "@/components/providers/MyNotificationProvi
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
-export default function DeleteListButton(list) {
-    const { notify } = useContext(NotificationsContext);
+export default function DeleteListButton({ list }) {
     const router = useRouter();
+    const { notify } = useContext(NotificationsContext);
+
     const deleteList = async (listId: number) => {
         await deleteListByListId(listId);
         router.back();
         notify("Successfully deleted list");
     };
+
     return (
         <Button
             handleClick={() => {
