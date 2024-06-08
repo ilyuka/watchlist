@@ -30,7 +30,7 @@ export default function SearchField({ handleClick }) {
         } else {
             setIsLoading(false);
         }
-    }, [query, timer]);
+    }, [query]);
 
     async function searchMovies(query: string) {
         const results = await fetchMoviesData(query);

@@ -1,12 +1,11 @@
-"use server";
-import { auth } from "@/helpers/auth/auth";
+import { getCurrentUser } from "@/helpers/auth/getUser";
 import { redirect } from "next/navigation";
 import CreateForm from "./CreateForm";
 
 export default async function Page() {
-    const session = await auth();
+    const currentUser = await getCurrentUser();
 
-    if (!session && !session.user) {
+    if (!currentUser || !currentUser.id || !currentUser.username) {
         redirect("/");
     }
 
@@ -16,7 +15,7 @@ export default async function Page() {
                 <CreateForm
                     title={"New List"}
                     moviesProp={[]}
-                    user={session.user}
+                    user={currentUser}
                     listData={{ title: "", description: "" }}
                     type="create"
                 ></CreateForm>

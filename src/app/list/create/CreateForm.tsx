@@ -1,4 +1,5 @@
 "use client";
+
 import FormTitle from "@/components/ListForm/FormTitle";
 import { useState, useReducer, useContext } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
@@ -16,7 +17,6 @@ export default function Form({ title, moviesProp, user, listData, type }) {
     const router = useRouter();
     const { notify } = useContext(NotificationsContext);
     const [movies, dispatchMovies] = useReducer(moviesReducer, moviesProp);
-    console.log("MOVIES", movies);
     const methods = useForm({
         defaultValues: {
             title: listData.title || "",
