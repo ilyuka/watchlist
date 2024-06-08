@@ -22,7 +22,10 @@ export default function ListPreview({
             <div className="flex items-center">
                 <ListPreviewPosters
                     postersUrls={list.movies.map((mv) => {
-                        return { title: mv.movie.title, path: mv.movie.poster_path };
+                        return {
+                            title: mv.movie.title,
+                            path: mv.movie.poster_path,
+                        };
                     })}
                 ></ListPreviewPosters>
                 <div>
@@ -31,9 +34,12 @@ export default function ListPreview({
                             <Link href={`/list/${list.id}`}>{list.title}</Link>
                         </div>
                         {isOwner && (
-                            <Link href={`/list/${list.id}/edit`}>
-                                <Edit size={16} color={"#ffffff"}></Edit>
-                            </Link>
+                            <div className="flex gap-3">
+                                <Link href={`/list/${list.id}/edit`}>
+                                    <Edit size={16} color={"#ffffff"}></Edit>
+                                </Link>
+                                <Link href="/list/delete">delete</Link>
+                            </div>
                         )}
                     </div>
                     <div className="text-xs text-gray-400">
