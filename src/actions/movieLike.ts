@@ -1,7 +1,9 @@
 "use server";
 import prisma from "@/../prisma/prisma";
+import { revalidatePath } from "next/cache";
 
 export const getMoviesLikes = async (userId: number, movieIds: number[]) => {
+    console.log(userId, movieIds);
     try {
         const likes = await prisma.movieLike.findMany({
             where: {
@@ -50,6 +52,7 @@ export const addMovieLike = async (userId, movieId) => {
         if (!like) {
             throw new Error("Database Error");
         }
+        revalidatePath("/list");
         return like;
     } catch (e) {
         console.log(e);
@@ -58,6 +61,7 @@ export const addMovieLike = async (userId, movieId) => {
 };
 
 export const removeMovieLike = async (userId, movieId) => {
+    console.log(userId, movieId);
     try {
         const removal = await prisma.movieLike.delete({
             where: {
@@ -67,6 +71,7 @@ export const removeMovieLike = async (userId, movieId) => {
                 },
             },
         });
+        revalidatePath("/list");
         console.log("removal", removal);
     } catch (e) {
         console.error(e);

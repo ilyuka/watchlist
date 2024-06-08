@@ -1,13 +1,12 @@
 "use client";
-import Heart from "../svgs/Heart";
-import Eye from "../svgs/Eye";
 import DotsHorizontal from "../svgs/DotsHorizontal";
 import { useState, createContext, useTransition } from "react";
 import MoreOptions from "./MoreOptions";
-import { addMovieToList, deleteMovieFromList } from "@/actions/movieOnList";
 import Poster from "../Lists/Poster";
 import MainOptions from "./MainOptions";
 import LikeButton from "../ActionButtons/LikeButton";
+import EyeButton from "../ActionButtons/EyeButton";
+import { addMovieToList, deleteMovieFromList } from "@/actions/movieOnList";
 import { addMovieLike, removeMovieLike } from "@/actions/movieLike";
 
 export const MovieContext = createContext(null);
@@ -26,13 +25,14 @@ export default function Movie({
     const [inWatchlist, setInWatchlist] = useState(inWatchlistProp);
     const [isPending, startTransition] = useTransition();
 
-    const toggleInWatchlist = async (listId, movieId, pos) => {
+    const toggleInWatchlist = async (listId, movieId) => {
+        console.log("toggling wk");
         const newInWatchlist = !inWatchlist;
         setInWatchlist(newInWatchlist);
         if (newInWatchlist === true) {
             await addMovieToList(listId, movieId);
         } else {
-            await deleteMovieFromList(listId, movieId, pos);
+            await deleteMovieFromList(listId, movieId);
         }
     };
     const toggleLike = async (userId, movieId) => {
@@ -71,6 +71,16 @@ export default function Movie({
             <div className="movie-poster relative flex flex-col items-center rounded-sm">
                 {children}
                 <MainOptions>
+                    <EyeButton
+                        handleClick={(e) => {
+                            toggleInWatchlist(
+                                currentUser.watchlistId,
+                                movie.id,
+                            );
+                        }}
+                        size={22}
+                        inWatchlist={inWatchlist}
+                    ></EyeButton>
                     <LikeButton
                         handleClick={(e) =>
                             toggleLike(currentUser.id, movie.id)

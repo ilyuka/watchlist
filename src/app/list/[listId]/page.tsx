@@ -17,7 +17,7 @@ export default async function Page({ params }) {
         return notFound();
     }
 
-    let movieIds = movies.map((movie) => movie.movie.tmdbId);
+    let movieIds = movies.map((movie) => movie.movie.id);
 
     if (list.id === list.user.watchlistId) {
         redirect(`/${list.user.username}/watchlist`);
@@ -43,6 +43,7 @@ export default async function Page({ params }) {
                 list.id,
             ),
         ]);
+        console.log(currentUserLikes);
         body = (
             <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
                 {movies.map((movie) => {
@@ -54,7 +55,7 @@ export default async function Page({ params }) {
                             positionOnTheList={movie.positionOnTheList}
                             list={list}
                             isLikedProp={currentUserLikes.find(
-                                (like) => like.movieId === movie.movie.tmdbId,
+                                (like) => like.movieId === movie.movie.id,
                             )}
                             inWatchlistProp={inWatchlistIds.includes(
                                 movie.movie.tmdbId,

@@ -1,9 +1,10 @@
 "use server";
 import prisma from "@/../prisma/prisma";
+import { revalidatePath } from "next/cache";
 
 export const getAllMoviesFromList = async (listId) => {
     try {
-        const movies = prisma.movieOnList.findMany({
+        const movies = await prisma.movieOnList.findMany({
             where: {
                 listId: listId,
             },
@@ -20,12 +21,13 @@ export const getAllMoviesFromList = async (listId) => {
 
 export const addMovieToList = async (listId: number, movieId: number) => {
     try {
-        const creation = prisma.movieOnList.create({
+        const creation = await prisma.movieOnList.create({
             data: {
                 listId: listId,
                 movieId: movieId,
             },
         });
+        revalidatePath("/list");
         return creation;
     } catch (e) {
         console.log(e);
@@ -33,21 +35,15 @@ export const addMovieToList = async (listId: number, movieId: number) => {
     }
 };
 
-export const deleteMovieFromList = async (
-    listId: number,
-    movieId: number,
-    positionOnTheList: number,
-) => {
+export const deleteMovieFromList = async (listId: number, movieId: number) => {
     try {
-        prisma.movieOnList.delete({
+        await prisma.movieOnList.deleteMany({
             where: {
-                listId_movieId_positionOnTheList: {
-                    listId: listId,
-                    movieId: movieId,
-                    positionOnTheList: positionOnTheList,
-                },
+                listId: listId,
+                movieId: movieId,
             },
         });
+        revalidatePath("/list");
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");
