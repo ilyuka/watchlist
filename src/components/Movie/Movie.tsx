@@ -4,8 +4,7 @@ import Eye from "../svgs/Eye";
 import DotsHorizontal from "../svgs/DotsHorizontal";
 import { useState, createContext, useTransition } from "react";
 import MoreOptions from "./MoreOptions";
-// import { addMovieLike, removeMovieLike } from "@/services/movieService";
-import { addToWatchlist, removeFromWatchlist } from "@/services/listService";
+import { addMovieToList, deleteMovieFromList } from "@/actions/movieOnList";
 import Poster from "../Lists/Poster";
 import MainOptions from "./MainOptions";
 import LikeButton from "../ActionButtons/LikeButton";
@@ -14,34 +13,32 @@ import { addMovieLike, removeMovieLike } from "@/actions/movieLike";
 export const MovieContext = createContext(null);
 
 export default function Movie({
-    user,
+    currentUser,
     movie,
-    isLiked,
-    inWatchlist,
-    width,
-    height,
-    listId = -1,
-    listOwner = null,
+    positionOnTheList,
+    list,
+    isLikedProp,
+    inWatchlistProp,
+    children,
 }) {
     const [showOptions, setShowOptions] = useState(false);
-    const [liked, setLiked] = useState(isLiked);
+    const [isLiked, setIsLiked] = useState(isLikedProp);
+    const [inWatchlist, setInWatchlist] = useState(inWatchlistProp);
     const [isPending, startTransition] = useTransition();
-    const [inWatchlistState, setInWatchlistState] = useState(inWatchlist);
 
-    // const toggleInWatchlist = async () => {
-    //     const newInWatchlist = !inWatchlist;
-    //     setInWatchlist(newInWatchlist);
-    //     if (newInWatchlist === true) {
-    //         await addToWatchlist(watchlistId, movieId);
-    //     } else {
-    //         await removeFromWatchlist(watchlistId, movieId);
-    //     }
-    // };
-    console.log("movie IN MOVIE", movie);
+    const toggleInWatchlist = async (listId, movieId, pos) => {
+        const newInWatchlist = !inWatchlist;
+        setInWatchlist(newInWatchlist);
+        if (newInWatchlist === true) {
+            await addMovieToList(listId, movieId);
+        } else {
+            await deleteMovieFromList(listId, movieId, pos);
+        }
+    };
     const toggleLike = async (userId, movieId) => {
-        const newLiked = !liked;
+        const newLiked = !isLiked;
         startTransition(() => {
-            setLiked(newLiked);
+            setIsLiked(newLiked);
         });
         if (newLiked === true) {
             await addMovieLike(Number(userId), Number(movieId));
@@ -72,22 +69,14 @@ export default function Movie({
             // }}
         >
             <div className="movie-poster relative flex flex-col items-center rounded-sm">
-                <Poster
-                    title={
-                        movie.title +
-                        " (" +
-                        movie.release_date.split("-")[0] +
-                        ")"
-                    }
-                    path={movie.poster_path}
-                    height={height}
-                    width={width}
-                ></Poster>
+                {children}
                 <MainOptions>
                     <LikeButton
-                        handleClick={(e) => toggleLike(user.id, movie.id)}
+                        handleClick={(e) =>
+                            toggleLike(currentUser.id, movie.id)
+                        }
                         size={22}
-                        liked={liked}
+                        liked={isLiked}
                     ></LikeButton>
                 </MainOptions>
                 {/* {authed && (
