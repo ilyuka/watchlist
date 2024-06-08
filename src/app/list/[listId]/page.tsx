@@ -1,49 +1,93 @@
-import { auth } from "@/helpers/auth/auth";
+import { getCurrentUser } from "@/helpers/auth/getUser";
 import { getListByListId } from "@/actions/list";
 import { getAllMoviesFromList } from "@/actions/movies";
-import { getMoviesLikes } from "@/actions/movies";
-import { notFound } from "next/navigation";
-import { getWatchlistMovies } from "@/actions/watchlist";
+import { getMoviesLikes } from "@/actions/movieLike";
+import { notFound, redirect } from "next/navigation";
+import { getWatchlistIntersectListMovies } from "@/actions/watchlist";
 import Movie from "@/components/Movie/Movie";
-import React, { memo } from "react";
 
 export default async function Page({ params }) {
-    const [list, movies, session] = await Promise.all([
+    const [list, movies, currentUser] = await Promise.all([
         await getListByListId(Number(params.listId)),
         await getAllMoviesFromList(Number(params.listId)),
-        await auth(),
+        await getCurrentUser(),
     ]);
-    if (!list || !movies) {
+    if (list == null || movies == null) {
         return notFound();
     }
 
-    let listOwner = list.user;
-    let user;
-    let isOwner;
-    let likes;
-    let watchlistMovies;
     let movieIds = movies.map((movie) => movie.movie.tmdbId);
-    let watchlistId;
-    let watchlistMoviesIds;
 
-    if (session) {
-        user = session.user;
-        isOwner = session.user.id === list.userId;
-        watchlistId = user.watchlistId;
-        [likes, watchlistMovies] = await Promise.all([
-            await getMoviesLikes(user.id, movieIds),
-            await getWatchlistMovies(watchlistId),
-        ]);
-        watchlistMoviesIds = watchlistMovies.map((movie) => movie.movie.tmdbId);
+    if (list.id === list.user.watchlistId) {
+        redirect(`/${list.user.username}/watchlist`);
+    }
+
+    let body = undefined;
+    let currentUserLikes = undefined;
+    let inWatchlistIds = undefined; // in watchlist and in the current list
+
+    if (!currentUser) {
+        body = (
+            <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
+                {movies.map((movie) => {
+                    return <GuestMovie></GuestMovie>;
+                })}
+            </div>
+        );
     } else {
-        isOwner = false;
+        [currentUserLikes, inWatchlistIds] = await Promise.all([
+            await getMoviesLikes(currentUser.id, movieIds),
+            await getWatchlistIntersectListMovies(
+                currentUser.watchlistId,
+                list.id,
+            ),
+        ]);
+        body = (
+            <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
+                {movies.map((movie) => {
+                    return (
+                        <Movie
+                            user={user}
+                            key={movie.id}
+                            movie={movie.movie}
+                            movieId={movie.tmdbId}
+                            listId={Number(params.listId)}
+                            listOwner={listOwner}
+                            isLiked={likes.find(
+                                (like) => like.movieId === movie.movie.tmdbId,
+                            )}
+                            userId={user.id}
+                            inWatchlist_={watchlistMoviesIds.includes(
+                                movie.movie.tmdbId,
+                            )}
+                            watchlistId={watchlistId}
+                            width={125}
+                            height={187}
+                        ></Movie>
+                    );
+                })}
+            </div>
+        );
     }
 
-    if (session && (!listOwner || !likes || !watchlistMovies)) {
-        console.log(listOwner, likes, watchlistMovies);
-        return <div>500 page</div>;
-    }
-
+    return (
+        <main className="mx-auto max-w-4xl  py-4">
+            <div>
+                <p>List by {list.user.username}</p>
+            </div>
+            <div className={"text-2xl font-bold"}>
+                <h1>{list.title}</h1>
+            </div>
+            <div className="text-zinc-400">
+                <p>{list.description}</p>
+            </div>
+            <div>
+                <p>{list?.createdAt.toString()}</p>
+                <p>{list?.updatedAt.toString()}</p>
+            </div>
+            {body}
+        </main>
+    );
     return (
         <main className="mx-auto max-w-4xl  py-4">
             <div>
@@ -51,7 +95,7 @@ export default async function Page({ params }) {
             </div>
             <div
                 className={
-                    session && list.id === user.watchlistId
+                    user && list.id === user.watchlistId
                         ? "text-2xl font-bold text-orange-300"
                         : "text-2xl font-bold"
                 }
@@ -67,7 +111,7 @@ export default async function Page({ params }) {
             </div>
             <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
                 {movies.map((movie) => {
-                    return session ? (
+                    return user ? (
                         <Movie
                             user={user}
                             key={movie.id}
@@ -88,7 +132,7 @@ export default async function Page({ params }) {
                         ></Movie>
                     ) : (
                         <Movie
-                            authed={!!session}
+                            authed={!!user}
                             key={movie.id}
                             movie={movie.movie}
                             movieId={movie.tmdbId}

@@ -3,5 +3,8 @@ import { auth } from "./auth";
 
 export const getCurrentUser = cache(async () => {
     const session = await auth();
+    if (!session?.user) {
+        return null;
+    }
     return session.user;
 });

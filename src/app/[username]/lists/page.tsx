@@ -24,14 +24,18 @@ export default async function Page({
     for (const list of listOwner.lists) {
         console.log(list.movies);
     }
-    const isOwner = !!currentUser.id && currentUser.id === listOwner.id;
+    const isOwner = !!currentUser?.id && currentUser.id === listOwner.id;
     return (
         <main className="mx-auto max-w-4xl ">
             <FormTitle title={`${username}'s Lists`} />
             <div>
                 {isOwner && <Link href="/list/create">Start New List</Link>}
             </div>
-            <Lists lists={listOwner.lists} isOwner={isOwner} listOwner={listOwner} />
+            <Lists
+                lists={listOwner.lists}
+                isOwner={isOwner}
+                listOwner={listOwner}
+            />
         </main>
     );
 }

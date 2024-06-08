@@ -1,6 +1,26 @@
 "use server";
 import prisma from "@/../prisma/prisma";
 
+export const getMoviesLikes = async (userId: number, movieIds: number[]) => {
+    try {
+        const likes = await prisma.movieLike.findMany({
+            where: {
+                userId: userId,
+                movieId: {
+                    in: movieIds,
+                },
+            },
+            select: {
+                movieId: true,
+            },
+        });
+        return likes;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
 export const isMovieLiked = async (movieId, userId) => {
     try {
         const like = await prisma.movieLike.findFirst({
