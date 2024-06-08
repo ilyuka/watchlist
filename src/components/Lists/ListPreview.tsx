@@ -38,7 +38,12 @@ export default function ListPreview({
                                 <Link href={`/list/${list.id}/edit`}>
                                     <Edit size={16} color={"#ffffff"}></Edit>
                                 </Link>
-                                <Link href="/list/delete">delete</Link>
+                                <Link
+                                    href={`/list/${list.id}/delete`}
+                                    scroll={false}
+                                >
+                                    delete
+                                </Link>
                             </div>
                         )}
                     </div>

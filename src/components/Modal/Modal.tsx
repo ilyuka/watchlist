@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef } from "react";
 
@@ -21,10 +20,9 @@ export function Modal({ children }: { children: React.ReactNode }) {
             ref={dialogRef}
             onClick={closeModal}
             onClose={router.back}
-            className="text-3xl backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+            className="bg-transparent backdrop:bg-black/60 backdrop:backdrop-blur-sm"
         >
-            <div className="p-32">{children}</div>
-            <Link href="/catch-all">Catch All Page</Link>
+            <div>{children}</div>
         </dialog>
     );
 }

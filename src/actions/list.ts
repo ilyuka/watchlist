@@ -24,6 +24,10 @@ export const getListByListId = async (listId: number) => {
     }
 };
 
+export const deleteListByListId = async (listId: number) => {
+    console.log("deleted list");
+}
+
 export const getAllUserLists = async (userId: number) => {
     if (!userId) {
         return null;
