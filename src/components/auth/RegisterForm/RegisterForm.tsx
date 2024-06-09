@@ -4,7 +4,7 @@ import { NotificationsContext } from "@/components/Notifications";
 import { useRouter } from "next/navigation";
 import RegisterFormUI from "./RegisterFormUI";
 const axios = require("axios").default;
-import { validateUsername, validatePasswords } from "@/helpers/validators";
+import { validateUsername, validatePasswords } from "@/lib/validators";
 
 export default function RegisterForm() {
     const router = useRouter();

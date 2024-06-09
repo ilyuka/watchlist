@@ -27,7 +27,7 @@ export const addMovieToList = async (listId: number, movieId: number) => {
                 movieId: movieId,
             },
         });
-        revalidatePath("/list");
+        revalidatePath("/");
         return creation;
     } catch (e) {
         console.log(e);
@@ -43,7 +43,7 @@ export const deleteMovieFromList = async (listId: number, movieId: number) => {
                 movieId: movieId,
             },
         });
-        revalidatePath("/list");
+        revalidatePath("/");
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");

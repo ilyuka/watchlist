@@ -1,5 +1,5 @@
 import { Modal } from "@/components/Modal/Modal";
-import { getCurrentUser } from "@/helpers/auth/getUser";
+import { getCurrentUser } from "@/lib/auth/getUser";
 import { getListByListId } from "@/actions/list";
 import X from "@/components/svgs/X";
 import CloseModalX from "@/components/Modal/CloseModalX";

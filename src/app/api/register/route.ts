@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import prisma from "@/../prisma/prisma";
-import { validateUsername, validatePasswords } from "@/helpers/validators";
+import { validateUsername, validatePasswords } from "@/lib/validators";
 
 export async function POST(req: Request, res: Response) {
     try {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCurrentUser } from "@/helpers/auth/getUser";
+import { getCurrentUser } from "@/lib/auth/getUser";
 import FormTitle from "@/components/ListForm/FormTitle";
 import Lists from "@/components/Lists/Lists";
 import { getUserDataForListsPreviews } from "@/actions/user";

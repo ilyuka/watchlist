@@ -11,7 +11,7 @@ import SearchField from "@/components/SearchField/SearchField";
 import { createList, updateList } from "@/actions/listForm";
 import { NotificationsContext } from "@/components/providers/MyNotificationProvider";
 import { useRouter } from "next/navigation";
-import { moviesReducer } from "@/helpers/reducers/moviesReducer";
+import { moviesReducer } from "@/lib/reducers/moviesReducer";
 
 export default function Form({ title, moviesProp, user, listData, type }) {
     const router = useRouter();

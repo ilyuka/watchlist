@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/helpers/auth/getUser";
+import { getCurrentUser } from "@/lib/auth/getUser";
 import { getListByListId } from "@/actions/list";
 import { getAllMoviesFromList } from "@/actions/movieOnList";
 import { getMoviesLikes } from "@/actions/movieLike";

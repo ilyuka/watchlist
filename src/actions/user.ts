@@ -1,5 +1,4 @@
 "use server";
-
 import prisma from "@/../prisma/prisma";
 
 export const getUserByUsername = async (username: string) => {

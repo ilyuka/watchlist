@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/helpers/auth/getUser";
+import { getCurrentUser } from "@/lib/auth/getUser";
 import { redirect } from "next/navigation";
 import CreateForm from "./CreateForm";
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
-import { getCurrentUser } from "@/helpers/auth/getUser";
+import { getCurrentUser } from "@/lib/auth/getUser";
 import MyAppProvider from "@/components/providers/MyAppProvider";
 import React from "react";
 

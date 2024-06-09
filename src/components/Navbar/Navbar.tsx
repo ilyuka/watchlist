@@ -1,7 +1,7 @@
 import Logo from "@/components/svgs/Logo";
 import Logout from "./Logout";
 import Link from "next/link";
-import { auth } from "@/helpers/auth/auth";
+import { auth } from "@/lib/auth/auth";
 
 export default async function Navbar() {
     const session = await auth();
