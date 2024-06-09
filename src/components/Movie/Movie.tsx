@@ -80,6 +80,7 @@ export default function Movie({
                     inWatchlist={inWatchlist}
                     hideMoreOptions={hideMoreOptions}
                     isOwner={list.user.id === currentUser.id}
+                    list={list}
                     movie={movie}
                 ></MoreOptions>
             )}

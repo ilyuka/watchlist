@@ -36,7 +36,7 @@ export default function MyNotificationProvider({ children }) {
     return (
         <NotificationsContext.Provider value={{ message, notify }}>
             <div
-                className={`notification absolute mx-4 my-4 ${show ? "show" : ""}`}
+                className={`notification absolute mx-4 my-4 ${show ? "show" : ""} z-50`}
             >
                 <NotificationMessage message={message}></NotificationMessage>
             </div>

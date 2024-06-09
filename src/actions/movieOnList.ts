@@ -49,3 +49,17 @@ export const deleteMovieFromList = async (listId: number, movieId: number) => {
         throw new Error("Database Error");
     }
 };
+
+export const countMoviesOnList = async (listId: number) => {
+    try {
+        const count = await prisma.movieOnList.count({
+            where: {
+                listId: listId,
+            },
+        });
+        return count;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};

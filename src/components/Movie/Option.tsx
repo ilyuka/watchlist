@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Option({
     text,
     handleClick = () => {},
@@ -10,6 +12,21 @@ export default function Option({
             <button className="w-full px-4 py-3" onClick={handleClick}>
                 {text}
             </button>
+        </li>
+    );
+}
+
+export function OptionLink({ isFirst = false, href, text }) {
+    return (
+        <li
+            className={`${isFirst ? "" : "border-t border-t-stone-500"} hover:bg-stone-500`}
+        >
+            <Link
+                href={href}
+                className=" inline-block w-full px-4 py-3 text-center"
+            >
+                {text}
+            </Link>
         </li>
     );
 }

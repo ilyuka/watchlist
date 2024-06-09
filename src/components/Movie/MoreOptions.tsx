@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import Option from "./Option";
+import Option, { OptionLink } from "./Option";
 import Link from "next/link";
 import AddToListsOption from "./AddToListsOption";
 import RemoveFromListOption from "./RemoveFromListOption";
@@ -11,6 +11,7 @@ export default function MoreOptions({
     inWatchlist,
     hideMoreOptions,
     isOwner,
+    list,
     movie,
 }) {
     const [mouseEntered, setMouseEntered] = useState(false);
@@ -26,7 +27,7 @@ export default function MoreOptions({
                 hideMoreOptions();
             }
         }, 1000);
-    }, [hideMoreOptions]); // mouseEntered?
+    }, [hideMoreOptions]);
 
     return (
         <>
@@ -51,6 +52,13 @@ export default function MoreOptions({
                     }
                     handleClick={toggleInWatchlist}
                 ></Option>
+                {isOwner && (
+                    <OptionLink
+                        href={`/list/${list.id}/deleteMovie/${movie.id}`}
+                        text="Delete from list"
+                    ></OptionLink>
+                )}
+
                 {/* <AddToListsOption></AddToListsOption> */}
                 {/* {isOwner && <RemoveFromListOption />} */}
                 <Link

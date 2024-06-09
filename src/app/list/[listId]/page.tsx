@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { getWatchlistIntersectListMovies } from "@/actions/watchlist";
 import Movie from "@/components/Movie/Movie";
 import Poster from "@/components/Lists/Poster";
+import Link from "next/link";
 
 export default async function Page({ params }) {
     const [list, movies, currentUser] = await Promise.all([

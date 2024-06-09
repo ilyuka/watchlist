@@ -1,12 +1,28 @@
 "use server";
 import prisma from "@/../prisma/prisma";
 
-export const getMovieByTmdbId = async (tmdbIdParam) => {
+export const getMovieByTmdbId = async (tmdbIdParam: number) => {
     try {
         const tmdbId = Number(tmdbIdParam);
         const movie = await prisma.movie.findFirst({
             where: {
                 tmdbId: tmdbId,
+            },
+        });
+        if (!movie) {
+            return { error: true, message: "Movie not found" };
+        }
+        return { error: false, movie: movie };
+    } catch (e) {
+        return { error: true, message: "Database Error" };
+    }
+};
+
+export const getMovieByDbId = async (id: number) => {
+    try {
+        const movie = await prisma.movie.findFirst({
+            where: {
+                id: id,
             },
         });
         if (!movie) {
