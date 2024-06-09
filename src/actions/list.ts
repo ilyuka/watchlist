@@ -44,12 +44,46 @@ export const getAllUserLists = async (userId: number) => {
         return null;
     }
     try {
-        const lists = await prisma.list.findMany({
+        const res = await prisma.list.findMany({
             where: {
                 userId: userId,
             },
         });
-        return lists;
+
+        return res;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
+
+export const getAllUserListsAndMoviesFromList = async (
+    userId: number,
+    movieId: number,
+) => {
+    if (!userId) {
+        return null;
+    }
+    try {
+        const res = await prisma.list.findMany({
+            where: {
+                userId: userId,
+            },
+            include: {
+                movies: {
+                    where: {
+                        movieId: movieId,
+                    },
+                    take: 1,
+                },
+
+                _count: {
+                    select: { movies: true },
+                },
+            },
+        });
+
+        return res;
     } catch (e) {
         console.log(e);
         throw new Error("Database Error");

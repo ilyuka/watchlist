@@ -58,7 +58,10 @@ export default function MoreOptions({
                         text="Delete from list"
                     ></OptionLink>
                 )}
-
+                <OptionLink
+                    href={`/movie/addToLists/${movie.id}`}
+                    text="Add to lists..."
+                ></OptionLink>
                 {/* <AddToListsOption></AddToListsOption> */}
                 {/* {isOwner && <RemoveFromListOption />} */}
                 <Link
