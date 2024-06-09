@@ -1,4 +1,4 @@
-import Heart from "../svgs/Heart";
+import Heart from "../../svgs/Heart";
 
 export default function LikeButton({ handleClick, size, liked }) {
     return (

@@ -1,4 +1,4 @@
-import Eye from "../svgs/Eye";
+import Eye from "../../svgs/Eye";
 
 export default function EyeButton({ handleClick, size, inWatchlist }) {
     return (

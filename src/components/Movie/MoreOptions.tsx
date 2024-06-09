@@ -1,18 +1,18 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef } from "react";
 import Option from "./Option";
 import Link from "next/link";
 import AddToListsOption from "./AddToListsOption";
 import RemoveFromListOption from "./RemoveFromListOption";
-import { MovieContext } from "./Movie";
 
 export default function MoreOptions({
+    isLiked,
     toggleLike,
     toggleInWatchlist,
     inWatchlist,
+    hideMoreOptions,
+    isOwner,
+    movie,
 }) {
-    const { listOwner, userId, liked, hideMoreOptions, movieId } =
-        useContext(MovieContext);
-
     const [mouseEntered, setMouseEntered] = useState(false);
     const mouseEnteredRef = useRef(mouseEntered);
 
@@ -26,7 +26,7 @@ export default function MoreOptions({
                 hideMoreOptions();
             }
         }, 1000);
-    }, [hideMoreOptions]);
+    }, [hideMoreOptions]); // mouseEntered?
 
     return (
         <>
@@ -39,7 +39,7 @@ export default function MoreOptions({
                 onMouseLeave={() => setTimeout(hideMoreOptions, 150)}
             >
                 <Option
-                    text={liked ? "Unlike" : "Like"}
+                    text={isLiked ? "Unlike" : "Like"}
                     handleClick={toggleLike}
                     isFirst={true}
                 ></Option>
@@ -51,12 +51,11 @@ export default function MoreOptions({
                     }
                     handleClick={toggleInWatchlist}
                 ></Option>
-                <AddToListsOption></AddToListsOption>
-                {listOwner.id === userId && <RemoveFromListOption />}
-
+                {/* <AddToListsOption></AddToListsOption> */}
+                {/* {isOwner && <RemoveFromListOption />} */}
                 <Link
                     className="w-full border-t border-t-stone-500 px-4 py-3 text-center hover:bg-stone-500"
-                    href={`/movie/${movieId}`}
+                    href={`/movie/${movie.tmdbId}`}
                 >
                     Go to the film
                 </Link>

@@ -1,15 +1,12 @@
 "use client";
-import DotsHorizontal from "../svgs/DotsHorizontal";
-import { useState, createContext, useTransition } from "react";
-import MoreOptions from "./MoreOptions";
-import Poster from "../Lists/Poster";
-import MainOptions from "./MainOptions";
-import LikeButton from "../ActionButtons/LikeButton";
-import EyeButton from "../ActionButtons/EyeButton";
+import { useState, useTransition } from "react";
 import { addMovieToList, deleteMovieFromList } from "@/actions/movieOnList";
 import { addMovieLike, removeMovieLike } from "@/actions/movieLike";
-
-export const MovieContext = createContext(null);
+import MainOptions from "./MainOptions";
+import LikeButton from "@/components/Utils/SvgButtons/LikeButton";
+import EyeButton from "@/components/Utils/SvgButtons/EyeButton";
+import DotsHorizontalButton from "../Utils/SvgButtons/DotsHorizontalButton";
+import MoreOptions from "./MoreOptions";
 
 export default function Movie({
     currentUser,
@@ -53,90 +50,39 @@ export default function Movie({
         setShowOptions(false);
     };
 
-    const SVG_FILL_COLOR = "#ecfeff";
-
     return (
-        <MovieContext.Provider
-            value={1}
-            // value={{
-            //     listOwner,
-            //     liked,
-            //     listId,
-            //     movie,
-            //     movieId,
-            //     userId,
-            //     hideMoreOptions,
-            // }}
-        >
-            <div className="movie-poster relative flex flex-col items-center rounded-sm">
-                {children}
-                <MainOptions>
-                    <EyeButton
-                        handleClick={(e) => {
-                            toggleInWatchlist(
-                                currentUser.watchlistId,
-                                movie.id,
-                            );
-                        }}
-                        size={22}
-                        inWatchlist={inWatchlist}
-                    ></EyeButton>
-                    <LikeButton
-                        handleClick={(e) =>
-                            toggleLike(currentUser.id, movie.id)
-                        }
-                        size={22}
-                        liked={isLiked}
-                    ></LikeButton>
-                </MainOptions>
-                {/* {authed && (
-                    <ul className="options">
-                        <li>
-                            <button title="Add to liked" onClick={toggleLike}>
-                                <Heart
-                                    size={22}
-                                    fill={liked ? "orange" : SVG_FILL_COLOR}
-                                    color={"none"}
-                                ></Heart>
-                            </button>
-                        </li>
-
-                        <li>
-                            <button
-                                title="Add to watchlist"
-                                onClick={toggleInWatchlist}
-                            >
-                                <Eye
-                                    size={22}
-                                    fill={"none"}
-                                    color={
-                                        inWatchlist ? "skyblue" : SVG_FILL_COLOR
-                                    }
-                                ></Eye>
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                title="More options"
-                                onClick={showMoreOptions}
-                            >
-                                <DotsHorizontal
-                                    size={24}
-                                    fill={"none"}
-                                    color={SVG_FILL_COLOR}
-                                ></DotsHorizontal>
-                            </button>
-                        </li>
-                    </ul>
-                )}
-                {showOptions && (
-                    <MoreOptions
-                        toggleLike={toggleLike}
-                        toggleInWatchlist={toggleInWatchlist}
-                        inWatchlist={inWatchlist}
-                    ></MoreOptions>
-                )} */}
-            </div>
-        </MovieContext.Provider>
+        <div className="movie-poster relative flex flex-col items-center rounded-sm">
+            {children}
+            <MainOptions>
+                <EyeButton
+                    handleClick={(e) => {
+                        toggleInWatchlist(currentUser.watchlistId, movie.id);
+                    }}
+                    size={22}
+                    inWatchlist={inWatchlist}
+                />
+                <LikeButton
+                    handleClick={(e) => toggleLike(currentUser.id, movie.id)}
+                    size={22}
+                    liked={isLiked}
+                />
+                <DotsHorizontalButton handleClick={showMoreOptions} size={22} />
+            </MainOptions>
+            {showOptions && (
+                <MoreOptions
+                    isLiked={isLiked}
+                    toggleLike={toggleLike.bind(null, currentUser.id, movie.id)}
+                    toggleInWatchlist={toggleInWatchlist.bind(
+                        null,
+                        currentUser.watchlistId,
+                        movie.id,
+                    )}
+                    inWatchlist={inWatchlist}
+                    hideMoreOptions={hideMoreOptions}
+                    isOwner={list.user.id === currentUser.id}
+                    movie={movie}
+                ></MoreOptions>
+            )}
+        </div>
     );
 }
