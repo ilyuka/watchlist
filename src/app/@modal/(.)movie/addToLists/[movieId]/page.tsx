@@ -20,8 +20,8 @@ export default async function DeleteListModal({ params: { movieId } }) {
     );
     return (
         <Modal>
-            <div className="max-w-lg rounded-lg bg-slate-600 px-8 py-6 text-gray-200">
-                <div className="mb-6 flex justify-between">
+            <div className="max-w-lg rounded-lg bg-slate-600 py-6 text-gray-200">
+                <div className="mb-4 flex justify-between">
                     <div className="text-lg font-bold">
                         Add{" "}
                         <span className="text-fuchsia-400">
@@ -33,10 +33,10 @@ export default async function DeleteListModal({ params: { movieId } }) {
                         <X></X>
                     </CloseModalX>
                 </div>
-                <ModalLists lists={listsModified}></ModalLists>
-                <div className="flex justify-end">
-                    <button>here</button>
-                </div>
+                <ModalLists
+                    movieId={movie.movie.id}
+                    lists={listsModified}
+                ></ModalLists>
             </div>
         </Modal>
     );

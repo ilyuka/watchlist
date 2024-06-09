@@ -25,7 +25,13 @@ export default function ModalList({ list, setSelectedLists }) {
                 onChange={(e) => {
                     isSelectedRef.current = !isSelectedRef.current;
                     setSelectedLists((cur) => {
-                        return { ...cur, [list.id]: isSelectedRef.current };
+                        return {
+                            ...cur,
+                            [list.id]: {
+                                selected: isSelectedRef.current,
+                                title: list.title,
+                            },
+                        };
                     });
                 }}
             />

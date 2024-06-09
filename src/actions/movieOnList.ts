@@ -63,3 +63,23 @@ export const countMoviesOnList = async (listId: number) => {
         throw new Error("Database Error");
     }
 };
+
+export const addMovieToLists = async (movieId: number, listIds: number[]) => {
+    try {
+        console.log(listIds);
+        const rowsToInsert = listIds.map((id) => {
+            return { movieId: movieId, listId: id };
+        });
+
+        const entries = await prisma.movieOnList.createManyAndReturn({
+            data: rowsToInsert,
+        });
+
+        console.log("new entries", entries);
+        revalidatePath("/[username]/lists");
+        return entries;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Database Error");
+    }
+};
