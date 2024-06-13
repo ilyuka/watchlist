@@ -20,8 +20,8 @@ export default async function DeleteListModal({ params: { movieId } }) {
     );
     return (
         <Modal>
-            <div className="min-w-96 rounded-lg bg-slate-600 py-6 text-gray-200">
-                <div className="mb-4 flex justify-between px-6">
+            <div className="min-w-96 overflow-clip rounded-lg bg-slate-600 pt-6 text-gray-200">
+                <div className="mb-6 flex justify-between px-6">
                     <div className="text-lg font-bold">
                         Add{" "}
                         <span className="text-fuchsia-400">

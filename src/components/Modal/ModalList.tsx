@@ -1,29 +1,27 @@
 "use client";
-/*
-id: 7,
-    isWatchlist: false,
-    userId: 1,
-    title: 'ddddd',
-    description: '1231245',
-    likesCount: 0,
-    createdAt: 2024-06-08T13:46:19.652Z,
-    updatedAt: 2024-06-09T05:25:22.194Z,
-    movies: [],
-    _count: { movies: 1 }
 
-*/
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { MaterialSymbolsFitbitCheckSmallSharp } from "../svgs/CheckSmallSharp";
 
 export default function ModalList({ list, setSelectedLists }) {
     const isSelectedRef = useRef(false);
+    const [isSelected, setIsSelected] = useState(false);
     return (
-        <div>
-            <input
-                type="checkbox"
-                name="selected"
-                id="selected"
-                onChange={(e) => {
+        <div
+            className={`flex items-center border-t border-t-slate-700 px-4 py-2 ${isSelected ? "bg-slate-700" : ""}`}
+        >
+            <MaterialSymbolsFitbitCheckSmallSharp
+                width={"30"}
+                height={"30"}
+                className={`mr-4 ${isSelected ? "text-green-400" : "text-transparent"}`}
+            ></MaterialSymbolsFitbitCheckSmallSharp>
+            <button
+                className={
+                    isSelected ? "text-white" : "text-gray-300 hover:text-white"
+                }
+                onClick={() => {
                     isSelectedRef.current = !isSelectedRef.current;
+                    setIsSelected((isSlctd) => !isSlctd);
                     setSelectedLists((cur) => {
                         return {
                             ...cur,
@@ -34,10 +32,12 @@ export default function ModalList({ list, setSelectedLists }) {
                         };
                     });
                 }}
-            />
-            {list.title}
-            {isSelectedRef.current ? "V" : "X"}
-            {list._count.movies} movies
+            >
+                {list.title}
+            </button>
+            <span className="ml-auto text-sm text-gray-400">
+                {list._count.movies} movies
+            </span>
         </div>
     );
 }

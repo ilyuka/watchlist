@@ -33,7 +33,7 @@ export default function ModalLists({ movieId, lists }) {
 
     return (
         <div>
-            <div className="mb-4">
+            <div className="mb-2">
                 {lists.map((list) => {
                     if (!list.isWatchlist && list.movies.length > 0) {
                         return (
@@ -55,12 +55,13 @@ export default function ModalLists({ movieId, lists }) {
                 })}
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end bg-slate-700 px-6 py-4">
                 <button
                     onClick={(e) => {
                         console.log(selectedLists);
                         addMovie();
                     }}
+                    className=""
                 >
                     done
                 </button>
