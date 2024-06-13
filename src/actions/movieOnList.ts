@@ -11,6 +11,9 @@ export const getAllMoviesFromList = async (listId) => {
             include: {
                 movie: true,
             },
+            orderBy: {
+                positionOnTheList: "asc",
+            },
         });
         return movies;
     } catch (e) {
