@@ -5,6 +5,7 @@ import { getMoviesLikes } from "@/actions/movieLike";
 import { notFound, redirect } from "next/navigation";
 import { getWatchlistIntersectListMovies } from "@/actions/watchlist";
 import Movie from "@/components/Movie/Movie";
+import GuestMovie from "@/components/Movie/GuestMovie";
 import Poster from "@/components/Lists/Poster";
 import Link from "next/link";
 
@@ -32,7 +33,21 @@ export default async function Page({ params }) {
         body = (
             <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
                 {movies.map((movie) => {
-                    return <GuestMovie></GuestMovie>;
+                    return (
+                        <GuestMovie key={movie.id}>
+                            <Poster
+                                title={
+                                    movie.movie.title +
+                                    " (" +
+                                    movie.movie.release_date.split("-")[0] +
+                                    ")"
+                                }
+                                path={movie.movie.poster_path}
+                                height={187}
+                                width={125}
+                            ></Poster>
+                        </GuestMovie>
+                    );
                 })}
             </div>
         );
