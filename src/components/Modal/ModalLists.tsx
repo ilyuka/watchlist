@@ -12,6 +12,13 @@ export default function ModalLists({ movieId, lists }) {
     const router = useRouter();
     const [selectedLists, setSelectedLists] = useState({});
 
+    const selectedListsCount = Object.keys(selectedLists).reduce(
+        (prev, curr) => {
+            return selectedLists[curr].selected ? prev + 1 : prev;
+        },
+        0,
+    );
+
     const addMovie = async () => {
         await addMovieToLists(
             movieId,
@@ -55,13 +62,19 @@ export default function ModalLists({ movieId, lists }) {
                 })}
             </div>
 
-            <div className="flex justify-end bg-slate-700 px-6 py-4">
+            <div className="flex justify-between bg-slate-700 px-10 py-4">
+                <div>
+                    {selectedListsCount > 0
+                        ? `${selectedListsCount} selected`
+                        : ""}
+                </div>
                 <button
                     onClick={(e) => {
                         console.log(selectedLists);
                         addMovie();
                     }}
                     className=""
+                    disabled={selectedListsCount < 1}
                 >
                     done
                 </button>
