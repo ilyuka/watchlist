@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Option, { OptionLink } from "./Option";
 import Link from "next/link";
-import AddToListsOption from "./AddToListsOption";
-import RemoveFromListOption from "./RemoveFromListOption";
 
 export default function MoreOptions({
     isLiked,
@@ -62,8 +60,6 @@ export default function MoreOptions({
                     href={`/movie/addToLists/${movie.id}`}
                     text="Add to lists..."
                 ></OptionLink>
-                {/* <AddToListsOption></AddToListsOption> */}
-                {/* {isOwner && <RemoveFromListOption />} */}
                 <Link
                     className="w-full border-t border-t-stone-500 px-4 py-3 text-center hover:bg-stone-500"
                     href={`/movie/${movie.tmdbId}`}
