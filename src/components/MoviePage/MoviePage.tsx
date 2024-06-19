@@ -1,8 +1,10 @@
 import BackdropPoster from "./BackdropPoster";
-import Movie from "../Movie/Movie";
+import MoviePageMovie from "@/components/MoviePage/MoviePageMovie";
+import GuestMovie from "../Movie/GuestMovie";
+import Poster from "@/components/Lists/Poster";
 
 export default function MoviePage({
-    user,
+    currentUser,
     movie,
     inWatchlist,
     isLiked,
@@ -16,17 +18,42 @@ export default function MoviePage({
                     base64={base64}
                 ></BackdropPoster>
             )}
-            {user ? (
-                <Movie
-                    user={user}
+            {currentUser ? (
+                <MoviePageMovie
+                    key={movie.id}
+                    currentUser={currentUser}
                     movie={movie}
-                    inWatchlist={inWatchlist}
-                    isLiked={isLiked}
-                    width={100}
-                    height={250}
-                ></Movie>
+                    positionOnTheList={movie.positionOnTheList}
+                    isLikedProp={isLiked}
+                    inWatchlistProp={inWatchlist}
+                >
+                    <Poster
+                        title={
+                            movie.title +
+                            " (" +
+                            movie.release_date.split("-")[0] +
+                            ")"
+                        }
+                        path={movie.poster_path}
+                        height={250}
+                        width={200}
+                    ></Poster>
+                </MoviePageMovie>
             ) : (
-                <GuestMovie></GuestMovie>
+                <GuestMovie>
+                    {" "}
+                    <Poster
+                        title={
+                            movie.title +
+                            " (" +
+                            movie.release_date.split("-")[0] +
+                            ")"
+                        }
+                        path={movie.poster_path}
+                        height={250}
+                        width={200}
+                    ></Poster>
+                </GuestMovie>
             )}
         </div>
     );
