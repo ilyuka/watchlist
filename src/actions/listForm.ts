@@ -35,14 +35,7 @@ const createList = async (data: FieldValues, user, movies) => {
                 if (!movieInDatabase) {
                     const movie = await prisma.movie.create({
                         data: {
-                            tmdbId: movies[i].tmdbId,
-                            title: movies[i].title,
-                            release_date: movies[i].release_date,
-                            poster_path: movies[i].poster_path,
-                            backdrop_path: movies[i].backdrop_path,
-                            original_title: movies[i].original_title,
-                            overview: movies[i].overview,
-                            original_language: movies[i].original_language,
+                            ...movies[i],
                         },
                     });
 
@@ -114,14 +107,7 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                 if (!movieInDatabase) {
                     const movie = await prisma.movie.create({
                         data: {
-                            tmdbId: movies[i].tmdbId,
-                            title: movies[i].title,
-                            release_date: movies[i].release_date,
-                            poster_path: movies[i].poster_path,
-                            backdrop_path: movies[i].backdrop_path,
-                            original_title: movies[i].original_title,
-                            overview: movies[i].overview,
-                            original_language: movies[i].original_language,
+                            ...movies[i],
                         },
                     });
 

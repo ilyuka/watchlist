@@ -46,11 +46,12 @@ export default function Form({ title, moviesProp, user, listData, type }) {
                     tmdbId: movie.id,
                     title: movie.title,
                     release_date: movie.release_date,
-                    poster_path: movie.poster_path,
-                    backdrop_path: movie.backdrop_path,
+                    poster_path: movie.poster_path || "",
+                    backdrop_path: movie.backdrop_path || "",
                     original_title: movie.original_title,
                     overview: movie.overview,
                     original_language: movie.original_language,
+                    tagline: movie.tagline || "",
                 },
             });
         } else {
@@ -66,7 +67,7 @@ export default function Form({ title, moviesProp, user, listData, type }) {
                         return;
                     }
                     if (type === "create") {
-                        await createList(data, user, movies, listData.id);
+                        await createList(data, user, movies);
                         notify("List has been successfully created!");
                     } else if (type === "edit") {
                         await updateList(data, user, movies, listData.id);

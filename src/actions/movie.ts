@@ -36,7 +36,6 @@ export const getMovieByDbId = async (id: number) => {
 
 export const addMovieToDb = async (movie) => {
     try {
-        console.log("received movie", movie);
         const newMovie = await prisma.movie.create({
             data: {
                 tmdbId: movie.id,
@@ -47,6 +46,7 @@ export const addMovieToDb = async (movie) => {
                 original_title: movie.original_title,
                 overview: movie.overview,
                 original_language: movie.original_language,
+                tagline: movie.tagline,
             },
         });
         return { error: false, message: "Successfully added movie to the db" };
