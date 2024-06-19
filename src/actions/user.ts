@@ -26,7 +26,7 @@ export const getUserDataForListsPreviews = async (username: string) => {
                     // Include the related lists
                     orderBy: [
                         {
-                            createdAt: "asc",
+                            createdAt: "desc",
                         },
                     ],
                     include: {

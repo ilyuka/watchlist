@@ -81,6 +81,9 @@ export const getAllUserListsAndMoviesFromList = async (
                     select: { movies: true },
                 },
             },
+            orderBy: {
+                createdAt: "desc",
+            },
         });
 
         return res;
