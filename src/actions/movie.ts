@@ -36,6 +36,7 @@ export const getMovieByDbId = async (id: number) => {
 
 export const addMovieToDb = async (movie) => {
     try {
+        console.log("received movie", movie);
         const newMovie = await prisma.movie.create({
             data: {
                 tmdbId: movie.id,

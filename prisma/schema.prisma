@@ -45,10 +45,27 @@ model Movie {
   backdrop_path     String?
   original_title    String
   overview          String
+  tagline           String
   original_language String
   lists             MovieOnList[]
   likes             MovieLike[]
   comments          MovieComment[]
+  MovieGenre        MovieGenre[]
+}
+
+model Genre {
+  id         Int          @id @default(autoincrement())
+  genreId    Int          @unique
+  name       String       @unique
+  MovieGenre MovieGenre[]
+}
+
+model MovieGenre {
+  id      Int   @id @default(autoincrement())
+  movieId Int
+  genreId Int
+  movie   Movie @relation(fields: [movieId], references: [id])
+  genre   Genre @relation(fields: [genreId], references: [id])
 }
 
 model MovieOnList {
