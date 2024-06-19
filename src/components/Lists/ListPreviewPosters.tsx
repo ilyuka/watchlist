@@ -5,7 +5,6 @@ interface props {
 }
 
 export default function ListPreviewPosters({ postersUrls }: props) {
-    console.log(postersUrls);
     return (
         <div className="flex">
             {Array(5)

@@ -34,7 +34,6 @@ export default function SearchField({ handleClick }) {
 
     async function searchMovies(query: string) {
         const results = await fetchMoviesData(query);
-        console.log(results);
         setResults(results.results);
     }
     return (

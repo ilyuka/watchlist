@@ -15,7 +15,6 @@ export default function AddToListsModal() {
             );
             const json = await res.json();
             setData(json);
-            console.log(json);
         };
 
         fetchData();

@@ -24,7 +24,6 @@ export default function Form({ title, onSubmit }: Props) {
     const username = session?.data?.user?.username || "";
     const { addMovie } = useContext(MoviesContext);
     const methods = useForm();
-    console.log("FORM RENDER");
     return (
         <FormProvider {...methods}>
             <form

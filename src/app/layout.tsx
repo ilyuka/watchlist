@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
-import { getCurrentUser } from "@/lib/auth/getUser";
 import MyAppProvider from "@/components/providers/MyAppProvider";
 import React from "react";
 
@@ -20,8 +19,6 @@ export default async function RootLayout({
     children: React.ReactNode;
     modal: React.ReactNode;
 }>) {
-    const session = await getCurrentUser();
-    console.log("SERVER SESSION: ", session);
     return (
         <html lang="en">
             <body className={inter.className}>

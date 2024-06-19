@@ -6,7 +6,6 @@ import { Draggable } from "@hello-pangea/dnd";
 import LinesHorizontal from "../svgs/LinesHorizontal";
 
 export default function Movie({ movies, movie, dispatchMovies, index }) {
-    console.log("MOVIE", movie);
     function getStyle(style, snapshot) {
         if (!snapshot.isDropAnimating) {
             return style;

@@ -5,7 +5,6 @@ import { validateUsername, validatePasswords } from "@/lib/validators";
 
 export async function POST(req: Request, res: Response) {
     try {
-        console.log("here reached");
         const payload = await req.json();
         const username = payload.username.trim().toLowerCase();
         const password1 = payload.password1;

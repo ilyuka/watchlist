@@ -5,7 +5,6 @@ import { auth } from "@/lib/auth/auth";
 
 export default async function Navbar() {
     const session = await auth();
-    console.log("session:___", session);
     const username = session?.user.username;
 
     return (

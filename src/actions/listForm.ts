@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 
 const createList = async (data: FieldValues, user, movies) => {
     try {
-        console.log(data, user, movies);
         if (
             !data.title ||
             (!user.id && user.id !== 0) ||
@@ -46,7 +45,6 @@ const createList = async (data: FieldValues, user, movies) => {
                             original_language: movies[i].original_language,
                         },
                     });
-                    console.log("CREATED", movie);
 
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {
@@ -56,7 +54,6 @@ const createList = async (data: FieldValues, user, movies) => {
                         },
                     });
                 } else {
-                    console.log("IN db", movieInDatabase.id, newList.id, i);
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {
                             listId: newList.id,
@@ -78,7 +75,6 @@ const createList = async (data: FieldValues, user, movies) => {
 
 const updateList = async (data: FieldValues, user, movies, listId) => {
     try {
-        console.log(data, user, movies, listId);
         if (
             !data.title ||
             (!user.id && user.id !== 0) ||
@@ -107,11 +103,9 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                 },
             });
 
-            console.log("DB RECIEVED movies", movies);
             // Add the new movies to the list
             for (let i = 0; i < movies.length; i += 1) {
                 const movieId = movies[i].tmdbId;
-                console.log("MOVIE ID IN DB", movieId);
                 const movieInDatabase = await prisma.movie.findFirst({
                     where: {
                         tmdbId: movieId,
@@ -130,7 +124,6 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                             original_language: movies[i].original_language,
                         },
                     });
-                    console.log("UPDATED");
 
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {
@@ -140,7 +133,6 @@ const updateList = async (data: FieldValues, user, movies, listId) => {
                         },
                     });
                 } else {
-                    console.log("IN db", movieInDatabase.id, listId, i);
                     const newMovieOnList = await prisma.movieOnList.create({
                         data: {
                             listId: listId,

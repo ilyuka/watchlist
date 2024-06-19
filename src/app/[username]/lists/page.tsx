@@ -21,9 +21,7 @@ export default async function Page({
     if (!listOwner) {
         return notFound();
     }
-    for (const list of listOwner.lists) {
-        console.log(list.movies);
-    }
+
     const isOwner = !!currentUser?.id && currentUser.id === listOwner.id;
     return (
         <main className="mx-auto max-w-4xl ">

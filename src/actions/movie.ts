@@ -48,7 +48,6 @@ export const addMovieToDb = async (movie) => {
                 original_language: movie.original_language,
             },
         });
-        console.log("new movie in db", newMovie);
         return { error: false, message: "Successfully added movie to the db" };
     } catch (e) {
         console.error(e);

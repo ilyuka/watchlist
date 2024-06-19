@@ -1,7 +1,6 @@
 import { MaterialSymbolsFitbitCheckSmallSharp } from "../svgs/CheckSmallSharp";
 
 export default function ModalListDisabled({ list }) {
-    console.log(list);
     return (
         <div className="flex items-center border-t border-t-slate-700 px-4 py-2">
             <MaterialSymbolsFitbitCheckSmallSharp

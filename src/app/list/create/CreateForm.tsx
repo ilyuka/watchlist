@@ -62,7 +62,6 @@ export default function Form({ title, moviesProp, user, listData, type }) {
         <FormProvider {...methods}>
             <form
                 onSubmit={methods.handleSubmit(async (data) => {
-                    console.log("here");
                     if (!moviesAreValid()) {
                         return;
                     }

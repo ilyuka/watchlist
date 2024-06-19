@@ -59,7 +59,6 @@ export default async function Page({ params }) {
                 list.id,
             ),
         ]);
-        console.log(currentUserLikes);
         body = (
             <div className="my-4 grid max-w-2xl grid-cols-5 gap-4">
                 {movies.map((movie) => {

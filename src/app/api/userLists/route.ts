@@ -21,7 +21,6 @@ export async function GET(req: Request, res: Response) {
                 },
             },
         });
-        console.log("LISTS", lists[1]);
 
         const shortenedLists = lists.map((list, index) => {
             return {

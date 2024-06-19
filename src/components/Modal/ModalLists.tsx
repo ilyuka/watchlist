@@ -70,7 +70,6 @@ export default function ModalLists({ movieId, lists }) {
                 </div>
                 <button
                     onClick={(e) => {
-                        console.log(selectedLists);
                         addMovie();
                     }}
                     className=""

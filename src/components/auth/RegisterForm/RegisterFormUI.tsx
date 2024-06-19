@@ -11,7 +11,6 @@ export default function RegisterFormUI({
     onPassword2Change,
     onSubmit,
 }) {
-    console.log(usernameErrors);
     return (
         <div className="grid h-screen place-items-center">
             <div

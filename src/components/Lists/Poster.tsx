@@ -30,7 +30,6 @@ export default function Poster({
             </div>
         );
     }
-    console.log("path", `${process.env.NEXT_PUBLIC_TMDB_POSTER_URL}${path}`);
     return (
         <div key={path} className={baseStyle}>
             <Image

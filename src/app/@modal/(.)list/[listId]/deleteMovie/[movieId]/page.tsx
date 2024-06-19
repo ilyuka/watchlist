@@ -14,7 +14,6 @@ export default async function DeleteMovieModal({
         getListByListId(Number(listId)),
         getMovieByDbId(Number(movieId)),
     ]);
-    console.log("MOVIE?", movie);
     const isOwner = currentUser.id === list.userId;
     if (!isOwner) {
         throw new Error("dont have access rights");

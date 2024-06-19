@@ -22,7 +22,6 @@ export default function MoviePageMovie({
     const [isPending, startTransition] = useTransition();
 
     const toggleInWatchlist = async (listId, movieId) => {
-        console.log("toggling wk");
         const newInWatchlist = !inWatchlist;
         setInWatchlist(newInWatchlist);
         if (newInWatchlist === true) {
