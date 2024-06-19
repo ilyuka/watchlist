@@ -2,6 +2,7 @@ import BackdropPoster from "./BackdropPoster";
 import MoviePageMovie from "@/components/MoviePage/MoviePageMovie";
 import GuestMovie from "../Movie/GuestMovie";
 import Poster from "@/components/Lists/Poster";
+import MoviePageInfo from "./MoviePageInfo/MoviePageInfo";
 
 export default function MoviePage({
     currentUser,
@@ -25,11 +26,12 @@ export default function MoviePage({
                     style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 3fr",
+                        alignItems: "start",
                         columnGap: "4rem",
                     }}
                     className="w-full"
                 >
-                    <div className="flex flex-col items-center">
+                    <div className="sticky top-3 flex flex-col items-center">
                         {currentUser ? (
                             <MoviePageMovie
                                 key={movie.id}
@@ -68,8 +70,8 @@ export default function MoviePage({
                             </GuestMovie>
                         )}
                     </div>
-                    <div className="grid-cols-3">
-                        <div>here</div>
+                    <div>
+                        <MoviePageInfo movie={movie}></MoviePageInfo>
                     </div>
                 </div>
             </div>

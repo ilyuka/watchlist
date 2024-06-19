@@ -49,7 +49,4 @@ export default async function Page({ params }: { params: { tmdbId: string } }) {
             </div>
         </main>
     );
-    // Movie client component
-    // side component: movie options
-    // comments component
 }
