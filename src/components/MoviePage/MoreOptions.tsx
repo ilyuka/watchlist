@@ -28,7 +28,7 @@ export default function MoreOptions({
         <>
             <ul
                 className="absolute bottom-4 z-20 flex w-max flex-col rounded-md border border-stone-500 bg-stone-900/95 text-sm text-emerald-50 shadow-2xl"
-                style={{ left: "90%" }}
+                style={{ left: "80%" }}
                 onMouseEnter={() => {
                     setMouseEntered(true);
                 }}

@@ -16,7 +16,6 @@ export default function MoviePageMovie({
     inWatchlistProp,
     children,
 }) {
-    console.log("MOVIE PAGE MOVIE", movie);
     const [showOptions, setShowOptions] = useState(false);
     const [isLiked, setIsLiked] = useState(isLikedProp);
     const [inWatchlist, setInWatchlist] = useState(inWatchlistProp);
@@ -51,7 +50,7 @@ export default function MoviePageMovie({
     };
 
     return (
-        <div className="movie-poster relative flex flex-col items-center rounded-sm">
+        <div className="movie-poster relative flex flex-col items-center ">
             {children}
             <MainOptions>
                 <EyeButton

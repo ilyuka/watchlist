@@ -5,5 +5,9 @@ body:has(.moviePage) {
 .moviePage {
     position: relative;
     top: -70px;
+}
 
+.movedUp {
+    position: relative;
+    top: -180px;
 }

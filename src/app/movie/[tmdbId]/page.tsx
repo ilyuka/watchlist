@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: { tmdbId: string } }) {
         movie.backdrop_path && (await getBase64(movie.backdrop_path));
 
     return (
-        <main className="moviePage ">
+        <main className="moviePage">
             <div className="mx-auto max-w-7xl">
                 <MoviePage
                     currentUser={currentUser}

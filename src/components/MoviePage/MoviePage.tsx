@@ -18,43 +18,61 @@ export default function MoviePage({
                     base64={base64}
                 ></BackdropPoster>
             )}
-            {currentUser ? (
-                <MoviePageMovie
-                    key={movie.id}
-                    currentUser={currentUser}
-                    movie={movie}
-                    positionOnTheList={movie.positionOnTheList}
-                    isLikedProp={isLiked}
-                    inWatchlistProp={inWatchlist}
+            <div
+                className={`mx-auto max-w-5xl ${movie.backdrop_path ? "movedUp" : ""}`}
+            >
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 3fr",
+                        columnGap: "4rem",
+                    }}
+                    className="w-full"
                 >
-                    <Poster
-                        title={
-                            movie.title +
-                            " (" +
-                            movie.release_date.split("-")[0] +
-                            ")"
-                        }
-                        path={movie.poster_path}
-                        height={250}
-                        width={200}
-                    ></Poster>
-                </MoviePageMovie>
-            ) : (
-                <GuestMovie>
-                    {" "}
-                    <Poster
-                        title={
-                            movie.title +
-                            " (" +
-                            movie.release_date.split("-")[0] +
-                            ")"
-                        }
-                        path={movie.poster_path}
-                        height={250}
-                        width={200}
-                    ></Poster>
-                </GuestMovie>
-            )}
+                    <div className="flex flex-col items-center">
+                        {currentUser ? (
+                            <MoviePageMovie
+                                key={movie.id}
+                                currentUser={currentUser}
+                                movie={movie}
+                                positionOnTheList={movie.positionOnTheList}
+                                isLikedProp={isLiked}
+                                inWatchlistProp={inWatchlist}
+                            >
+                                <Poster
+                                    title={
+                                        movie.title +
+                                        " (" +
+                                        movie.release_date.split("-")[0] +
+                                        ")"
+                                    }
+                                    path={movie.poster_path}
+                                    height={250}
+                                    width={200}
+                                ></Poster>
+                            </MoviePageMovie>
+                        ) : (
+                            <GuestMovie>
+                                {" "}
+                                <Poster
+                                    title={
+                                        movie.title +
+                                        " (" +
+                                        movie.release_date.split("-")[0] +
+                                        ")"
+                                    }
+                                    path={movie.poster_path}
+                                    height={250}
+                                    width={200}
+                                ></Poster>
+                            </GuestMovie>
+                        )}
+                    </div>
+                    <div className="grid-cols-3">
+                        <div>here</div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -17,7 +17,7 @@ export default function Poster({
 }: props) {
     const baseStyle =
         "h-full w-full flex items-center justify-center text-center italic text-sm text-gray-400 bg-gray-900";
-    const imageStyle = `h-full transform-gpu translate-x-${index * 15} z-${5 - index} bg-gray-900 overflow-clip rounded-sm shadow-2xl border border-gray-300/20`;
+    const imageStyle = `h-full transform-gpu translate-x-${index * 15} z-${5 - index} bg-gray-900 overflow-clip rounded-md shadow-2xl border border-gray-300/20`;
 
     if (!title) {
         return <div className={`${baseStyle} border border-gray-300/10`}></div>;
